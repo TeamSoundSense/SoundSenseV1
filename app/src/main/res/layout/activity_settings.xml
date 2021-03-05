@@ -6,4 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
+    <include
+        android:id="@+id/mainToolbar"
+        layout="@layout/toolbar"
+        android:layout_width="392dp"
+        android:layout_height="42dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
