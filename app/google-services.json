@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1091556420560",
+    "firebase_url": "https://proj1-1581e-default-rtdb.firebaseio.com",
+    "project_id": "proj1-1581e",
+    "storage_bucket": "proj1-1581e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091556420560:android:ad5d5ef485578e84f3a7d5",
+        "android_client_info": {
+          "package_name": "com.example.soundsensev1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1091556420560-4ucnhtaedsgn9v7piq3ergvqf4rnn26k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKuABPFFdjqxvLnEa09J4fv9MRwsL9SfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1091556420560-4ucnhtaedsgn9v7piq3ergvqf4rnn26k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
