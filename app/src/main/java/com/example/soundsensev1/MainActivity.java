@@ -11,14 +11,25 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAnalytics analytics;
+    private int clickNum = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Firebase Initialization
+
+        analytics = FirebaseAnalytics.getInstance(this);
 
         //toolbar settings
         Toolbar toolbar = findViewById(R.id.mainToolbar);
@@ -27,6 +38,18 @@ public class MainActivity extends AppCompatActivity {
 
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_baseline_menu_24);
         toolbar.setOverflowIcon(drawable);
+
+        //button test for firebase
+        Button buttonUp = findViewById(R.id.buttonUp);
+        TextView buttonClicks = findViewById(R.id.helloWorld);
+        buttonUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickNum++;
+                buttonClicks.setText("Amount of button clicks: "+clickNum);
+                analytics.logEvent("button_clicked",null);
+            }
+        });
 
 
 
