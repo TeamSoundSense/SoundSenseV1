@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "438749079423",
+    "project_id": "soundsense-644ed",
+    "storage_bucket": "soundsense-644ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438749079423:android:c00306de08689e1495dc4a",
+        "android_client_info": {
+          "package_name": "com.example.soundsensev1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438749079423-cjajg3vvvbn1qhg01904fr9suitagkht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChg3mktyetriV-afen2RWW7ZJ-2yXtMo0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438749079423-cjajg3vvvbn1qhg01904fr9suitagkht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

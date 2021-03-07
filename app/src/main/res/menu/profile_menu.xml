@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/editMode"
+        android:id="@+id/editItem"
         android:title="Edit Profile"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/logoutItem"
+        android:title="Logout" />
 </menu>

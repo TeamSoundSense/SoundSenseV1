@@ -3,9 +3,8 @@ package com.example.soundsensev1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,12 +14,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private EditText editName;
     private EditText editEmail;
-    private EditText editPassword;
     private Button saveButton;
+
+    private FirebaseUser user;
+    private DatabaseReference reference;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +46,40 @@ public class ProfileActivity extends AppCompatActivity {
         //initializing editTexts and button
         editName = findViewById(R.id.editProfileName);
         editEmail = findViewById(R.id.editProfileEmail);
-        editPassword = findViewById(R.id.editProfilePassword);
         saveButton = findViewById(R.id.saveButton);
 
         //By default have the editTexts not be editable by user
         editName.setEnabled(false);
         editEmail.setEnabled(false);
-        editPassword.setEnabled(false);
+
+        //firebase authentication
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        userID = user.getUid();
+
+        //get user info from firebase
+
+        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User userProfile = snapshot.getValue(User.class);
+
+                if(userProfile != null){
+                    String name = userProfile.name;
+                    String email = userProfile.email;
+
+                    editName.setText(name);
+                    editEmail.setText(email);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ProfileActivity.this,"User info error!",Toast.LENGTH_LONG).show();
+
+            }
+        });
 
     }
 
@@ -55,9 +92,14 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.editMode:
+            case R.id.editItem:
                 enterEditMode();
                 return true;
+
+            case R.id.logoutItem:
+                logoutUser();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -70,7 +112,6 @@ public class ProfileActivity extends AppCompatActivity {
         //By default have the editTexts not be editable by user
         editName.setEnabled(true);
         editEmail.setEnabled(true);
-        editPassword.setEnabled(true);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +128,16 @@ public class ProfileActivity extends AppCompatActivity {
         //hide the save button
         editName.setEnabled(false);
         editEmail.setEnabled(false);
-        editPassword.setEnabled(false);
         saveButton.setVisibility(View.INVISIBLE);
+    }
+
+    protected void logoutUser(){
+        FirebaseAuth.getInstance().signOut();
+        goToLoginActivity();
+    }
+
+    protected void goToLoginActivity(){
+        Intent intent = new Intent (this,LoginActivity.class);
+        startActivity(intent);
     }
 }
