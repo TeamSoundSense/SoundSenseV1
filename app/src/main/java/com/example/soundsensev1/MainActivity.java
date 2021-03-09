@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if(userProfile != null){
                     String name = userProfile.name;
-
                     welcomeTextView.setText("Welcome, "+ name +"!");
                 }
             }
