@@ -12,4 +12,30 @@
         android:layout_width="413dp"
         android:layout_height="50dp" />
 
+    <ListView
+        android:id="@+id/sensorListView"
+        android:layout_width="224dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="77dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.64"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainToolbar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="186dp"
+        android:layout_marginTop="183dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="409dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensorListView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
