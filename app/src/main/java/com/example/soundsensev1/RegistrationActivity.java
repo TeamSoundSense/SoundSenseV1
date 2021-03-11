@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     private Button registerButton;

@@ -1,8 +1,10 @@
 package com.example.soundsensev1;
 
+import java.util.ArrayList;
+
 public class User {
 
-    public String name,email;
+    public String name, email;
 
     public User(){
 
