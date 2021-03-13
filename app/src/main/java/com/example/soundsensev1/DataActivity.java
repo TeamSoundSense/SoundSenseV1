@@ -27,7 +27,7 @@ import java.util.List;
 public class DataActivity extends AppCompatActivity {
 
     protected ListView sensorListView;
-    private DatabaseReference sensorReference;
+    private DatabaseReference inputSensorReference;
     private DatabaseReference userReference;
     private DatabaseReference userSensorReference;
     private String userID;
@@ -49,31 +49,30 @@ public class DataActivity extends AppCompatActivity {
 
         //load sensor value
         sensorListView = findViewById(R.id.sensorListView);
+        //reference to firebase for user sensor data
         userReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sensorValues");
+        //reference to firebase to retrieve input sensor data
+        inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
+
         storeUserSensorValues();
         printUserSensorValues();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     protected void storeUserSensorValues() {
 
         //reference to firebase to retrieve sensor data
-        sensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
-        sensorReference.addValueEventListener(new ValueEventListener() {
+        inputSensorReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String value = snapshot.child("Analog").getValue().toString();
-                //add sensor value to an arraylist
-                inputSensorValues.add(value);
                 //upload array list to firebase database
-                userReference.setValue(inputSensorValues);
+                userReference.push().setValue(value);
             }
 
             @Override
@@ -83,6 +82,7 @@ public class DataActivity extends AppCompatActivity {
         });
 
     }
+
 
     protected void printUserSensorValues(){
 
@@ -94,8 +94,8 @@ public class DataActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String currentSensorValue = snapshot.getValue(String.class);
-                fbSensorValues.add(currentSensorValue);
-                adapter.notifyDataSetChanged();
+                    fbSensorValues.add(currentSensorValue);
+                    adapter.notifyDataSetChanged();
             }
 
             @Override
