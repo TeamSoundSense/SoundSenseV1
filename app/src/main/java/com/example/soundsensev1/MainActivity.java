@@ -47,22 +47,15 @@ public class MainActivity extends AppCompatActivity {
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_baseline_menu_24);
         toolbar.setOverflowIcon(drawable);
 
-        //login button
-        loginButton = findViewById(R.id.button1);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToLoginActivity();
-            }
-        });
-
         welcomeTextView = findViewById(R.id.welcomeTextView);
 
         //firebase authentication
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = user.getUid();
+        if(user!=null) {
+            userID = user.getUid();
+        }
 
         //get user info from firebase
 
