@@ -3,7 +3,9 @@ package com.example.soundsensev1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -106,14 +108,18 @@ public class  LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if(task.isSuccessful()){
+                    //edit shared preferences to set activity_executed to true
+                    SharedPreferences pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor edt = pref.edit();
+                    edt.putBoolean("activity_executed", true);
+                    edt.commit();
                     //redirect to main activity
                     goToMainActivity();
-                    loginProgressBar.setVisibility(View.GONE);
 
                 }else{
                     Toast.makeText(LoginActivity.this,"Failed to login! Please check your credentials. ",Toast.LENGTH_LONG).show();
-                    loginProgressBar.setVisibility(View.GONE);
                 }
+                loginProgressBar.setVisibility(View.GONE);
             }
         });
 
