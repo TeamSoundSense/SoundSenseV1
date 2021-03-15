@@ -83,6 +83,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        exitEditMode();
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
