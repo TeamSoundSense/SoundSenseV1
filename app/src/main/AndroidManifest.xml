@@ -31,7 +31,6 @@
             android:name=".ProfileActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity"/>
-
     </application>
 
 </manifest>
