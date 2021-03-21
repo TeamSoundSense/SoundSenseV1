@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,12 +26,14 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button loginButton;
     private TextView welcomeTextView;
+    private Button mainButton;
 
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
+
+    private int button_color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +49,41 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setOverflowIcon(drawable);
 
         welcomeTextView = findViewById(R.id.welcomeTextView);
+        mainButton = findViewById(R.id.mainButton);
+
 
         //firebase authentication
-
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         if(user!=null) {
             userID = user.getUid();
         }
 
-        //get user info from firebase
+        //button settings
+        button_color = 0;
+        mainButton.setText("Tap to\nturn\ngreen");
+        mainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (button_color==0){
+                    mainButton.setText("Tap to\nturn\nred");
+                    mainButton.setBackgroundResource(R.drawable.circular_button_green);
+                    button_color=1;
+                }
+                else if(button_color==1){
+                    mainButton.setText("Tap to\nturn\ngrey");
+                    mainButton.setBackgroundResource(R.drawable.circular_button_red);
+                    button_color=2;
+                }
+                else {
+                    mainButton.setText("Tap to\nturn\ngreen");
+                    mainButton.setBackgroundResource(R.drawable.circular_button);
+                    button_color=0;
+                }
+            }
+        });
 
+        //get user info from firebase
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -121,11 +146,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent (this,LoginActivity.class);
         startActivity(intent);
     }
-
-
-
-
-
-
 
 }
