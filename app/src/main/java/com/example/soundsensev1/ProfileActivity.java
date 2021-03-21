@@ -122,6 +122,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG);
                 exitEditMode();
+
             }
         });
     }

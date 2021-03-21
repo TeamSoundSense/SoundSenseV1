@@ -4,7 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -34,6 +41,8 @@ public class DataActivity extends AppCompatActivity {
     private TextView tv5;
     private ArrayList<String> inputSensorValues = new ArrayList<>();
     private ArrayList<String> fbSensorValues = new ArrayList<>();
+    private NotificationManagerCompat  notificationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +82,9 @@ public class DataActivity extends AppCompatActivity {
                 String value = snapshot.child("Analog").getValue().toString();
                 //upload array list to firebase database
                 userReference.push().setValue(value);
+                startService();
+
+
             }
 
             @Override
@@ -123,6 +135,17 @@ public class DataActivity extends AppCompatActivity {
         sensorListView.setAdapter(adapter);
 
     }
+
+    //method to start foreground service for sending notifications
+    protected void startService(){
+        Intent serviceIntent = new Intent(this, MyService.class);
+        ContextCompat.startForegroundService(this,serviceIntent);
+    }
+
+    protected void stopService(){
+        Intent serviceIntent = new Intent(this, MyService.class);
+    }
+
 
 
 }
