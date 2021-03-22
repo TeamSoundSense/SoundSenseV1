@@ -13,6 +13,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,12 +37,9 @@ public class DataActivity extends AppCompatActivity {
     protected ListView sensorListView;
     private DatabaseReference inputSensorReference;
     private DatabaseReference userReference;
-    private DatabaseReference userSensorReference;
-    private String userID;
-    private TextView tv5;
-    private ArrayList<String> inputSensorValues = new ArrayList<>();
     private ArrayList<String> fbSensorValues = new ArrayList<>();
-    private NotificationManagerCompat  notificationManager;
+
+    private SharedPreferencesHelper spHelper;
 
 
     @Override
@@ -54,6 +52,10 @@ public class DataActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Analysis");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //shared preferences
+
+        spHelper = new SharedPreferencesHelper(this);
 
 
         //load sensor value
@@ -80,11 +82,15 @@ public class DataActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String value = snapshot.child("Analog").getValue().toString();
-                //upload array list to firebase database
-                userReference.push().setValue(value);
-                startService();
-
-
+                //if sensor value isnt the same as recent value, upload the value to the firebase database
+                if(spHelper.getRecentSensorValue().equals(value)==false) {
+                    userReference.push().setValue(value);
+                    //store recent sensor value in shared prefs
+                    spHelper.setRecentSensorValue(value);
+                    Log.i("data activity", "recent value: " + spHelper.getRecentSensorValue());
+                    //start service to send notification
+                    startService();
+                }
             }
 
             @Override
@@ -133,7 +139,6 @@ public class DataActivity extends AppCompatActivity {
             }
         });
         sensorListView.setAdapter(adapter);
-
     }
 
     //method to start foreground service for sending notifications
