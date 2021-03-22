@@ -38,6 +38,8 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private String userID;
 
+    private SharedPreferencesHelper spHelper;
+
     private DatabaseReference userReference;
 
 
@@ -52,14 +54,18 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        spHelper = new SharedPreferencesHelper(this);
+
         //initializing editTexts and button
         editName = findViewById(R.id.editProfileName);
         editEmail = findViewById(R.id.editProfileEmail);
         saveButton = findViewById(R.id.saveButton);
 
+
         //By default have the editTexts not be editable by user
         editName.setEnabled(false);
         editEmail.setEnabled(false);
+
 
         //firebase authentication
 
@@ -164,10 +170,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void logoutUser(){
         FirebaseAuth.getInstance().signOut();
         //edit shared preferences to set activity_executed to false
-        SharedPreferences pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-        SharedPreferences.Editor edt = pref.edit();
-        edt.putBoolean("activity_executed", false);
-        edt.commit();
+        spHelper.setUserLogIn(false);
         goToLoginActivity();
     }
 

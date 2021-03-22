@@ -28,6 +28,8 @@ public class  LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressBar loginProgressBar;
 
+    private SharedPreferencesHelper spHelper;
+
 
 
     @Override
@@ -42,6 +44,8 @@ public class  LoginActivity extends AppCompatActivity {
         register = findViewById(R.id.textViewRegister);
         forgotPassword = findViewById(R.id.textViewfForgotPassword);
         loginProgressBar = findViewById(R.id.loginProgressBar);
+
+        spHelper = new SharedPreferencesHelper(this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -109,10 +113,7 @@ public class  LoginActivity extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     //edit shared preferences to set activity_executed to true
-                    SharedPreferences pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor edt = pref.edit();
-                    edt.putBoolean("activity_executed", true);
-                    edt.commit();
+                    spHelper.setUserLogIn(true);
                     //redirect to main activity
                     goToMainActivity();
 
