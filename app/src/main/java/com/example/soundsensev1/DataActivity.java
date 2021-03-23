@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -104,6 +103,11 @@ public class DataActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String value = snapshot.child("Analog").getValue().toString();
+                if(spHelper.getRecentSensorValue()==null){
+                    spHelper.setRecentSensorValue("0");
+                    Log.i("data activity", "recent value: " + spHelper.getRecentSensorValue());
+                }
+
                 //if sensor value isnt the same as recent value, upload the value to the firebase database
                 if(spHelper.getRecentSensorValue().equals(value)==false) {
                     userReference.push().setValue(value);
