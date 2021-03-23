@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -62,7 +63,6 @@ public class DataActivity extends AppCompatActivity {
 
         //shared preferences
         spHelper = new SharedPreferencesHelper(this);
-        spHelper.setRecentSensorValue("0");
 
         //adapter
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fbSensorValues);
@@ -127,7 +127,6 @@ public class DataActivity extends AppCompatActivity {
 
     }
 
-
     protected void printUserSensorValues(){
 
         //retrieve sensorvalues for specific user from firebase
@@ -174,26 +173,5 @@ public class DataActivity extends AppCompatActivity {
     protected void stopService(){
         Intent serviceIntent = new Intent(this, MyService.class);
     }
-
-    /*
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.data_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.deleteListItem:
-                deleteList();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-     */
 
 }
