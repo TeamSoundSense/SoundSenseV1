@@ -46,6 +46,7 @@ public class  LoginActivity extends AppCompatActivity {
         loginProgressBar = findViewById(R.id.loginProgressBar);
 
         spHelper = new SharedPreferencesHelper(this);
+
         mAuth = FirebaseAuth.getInstance();
 
         //login button

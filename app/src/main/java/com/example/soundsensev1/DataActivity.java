@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,9 @@ public class DataActivity extends AppCompatActivity {
 
     private SharedPreferencesHelper spHelper;
 
+    private Button deleteListButton;
+    ArrayAdapter<String> adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +61,11 @@ public class DataActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //shared preferences
-
         spHelper = new SharedPreferencesHelper(this);
+        spHelper.setRecentSensorValue("0");
 
+        //adapter
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fbSensorValues);
 
         //load sensor value
         sensorListView = findViewById(R.id.sensorListView);
@@ -71,11 +77,23 @@ public class DataActivity extends AppCompatActivity {
 
         storeUserSensorValues();
         printUserSensorValues();
+
+        deleteListButton = findViewById(R.id.deleteListButton);
+        deleteListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userReference.removeValue();
+                adapter.notifyDataSetChanged();
+                adapter.clear();
+            }
+        });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     protected void storeUserSensorValues() {
@@ -111,8 +129,6 @@ public class DataActivity extends AppCompatActivity {
 
 
     protected void printUserSensorValues(){
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fbSensorValues);
 
         //retrieve sensorvalues for specific user from firebase
         //display these values in a list view
@@ -159,6 +175,25 @@ public class DataActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, MyService.class);
     }
 
+    /*
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.data_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.deleteListItem:
+                deleteList();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+     */
 
 }
