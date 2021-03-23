@@ -9,20 +9,32 @@
     <include
         android:id="@+id/mainToolbar"
         layout="@layout/toolbar"
-        android:layout_width="413dp"
+        android:layout_width="411dp"
         android:layout_height="50dp" />
 
     <ListView
         android:id="@+id/sensorListView"
         android:layout_width="335dp"
         android:layout_height="531dp"
-        android:layout_marginTop="77dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/deleteListButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainToolbar" />
+
+    <Button
+        android:id="@+id/deleteListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="143dp"
+        android:layout_marginEnd="143dp"
+        android:layout_marginBottom="47dp"
+        android:text="Delete List"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainToolbar"
-        app:layout_constraintVertical_bias="0.109" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
