@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private String userID;
 
-    private int button_color;
+    private DatabaseReference sensorControlReference;
+
+    private boolean buttonOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,28 +65,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //button settings
-        button_color = 0;
-        mainButton.setText("Tap to\nturn\ngreen");
-        mainButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (button_color==0){
-                    mainButton.setText("Tap to\nturn\nred");
-                    mainButton.setBackgroundResource(R.drawable.circular_button_green);
-                    button_color=1;
-                }
-                else if(button_color==1){
-                    mainButton.setText("Tap to\nturn\ngrey");
-                    mainButton.setBackgroundResource(R.drawable.circular_button_red);
-                    button_color=2;
-                }
-                else {
-                    mainButton.setText("Tap to\nturn\ngreen");
-                    mainButton.setBackgroundResource(R.drawable.circular_button);
-                    button_color=0;
-                }
-            }
-        });
+        sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
+        setButtonValue();
 
         //get user info from firebase
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -103,6 +85,66 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"User info error!",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    protected void setButtonValue(){
+
+        mainButton.setText("Connecting\n...");
+
+        sensorControlReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                //read the current firebase value of device and convert it to int
+                String controlString = snapshot.getValue().toString();
+                int controlInt = Integer.parseInt(controlString);
+                Log.i("Settings","control switch: "+controlInt);
+
+                //set the button to whatever the current firebase value is
+                if(controlInt==0){
+                    buttonOFF();
+
+                }else{
+                    buttonON();
+                }
+
+                //user can turn on or off using the button depending on the firebase value
+                mainButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(buttonOn){
+                            sensorControlReference.setValue(0);
+                            buttonOFF();
+                        }
+                        else{
+                            sensorControlReference.setValue(1);
+                            buttonON();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Button error!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    protected void displayWarning(){
+        //TODO: write this method
+    }
+
+    protected void buttonOFF(){
+        mainButton.setText("Tap to\nturn\nON");
+        mainButton.setBackgroundResource(R.drawable.circular_button);
+        buttonOn = false;
+    }
+
+    protected void buttonON(){
+        mainButton.setText("Tap to\nturn\nOFF");
+        mainButton.setBackgroundResource(R.drawable.circular_button_green);
+        buttonOn = true;
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,11 +182,6 @@ public class MainActivity extends AppCompatActivity {
 
     protected void goToDataActivity(){
         Intent intent = new Intent (this,DataActivity.class);
-        startActivity(intent);
-    }
-
-    protected void goToLoginActivity(){
-        Intent intent = new Intent (this,LoginActivity.class);
         startActivity(intent);
     }
 
