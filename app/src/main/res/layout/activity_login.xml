@@ -37,6 +37,7 @@
         android:layout_marginTop="52dp"
         android:ems="10"
         android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="@+id/loginButton"
