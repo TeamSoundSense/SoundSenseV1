@@ -1,6 +1,7 @@
 package com.example.soundsensev1;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private Button mainButton;
 
     private FirebaseUser user;
-    private DatabaseReference reference;
     private String userID;
 
     private DatabaseReference sensorControlReference;
+    private DatabaseReference reference;
+    private DatabaseReference userReference;
 
     private boolean buttonOn;
 
@@ -65,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //button settings
+        userReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sensorValues");
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
         setButtonValue();
 
@@ -132,7 +138,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void displayWarning(){
-        //TODO: write this method
+        //retrieve sensorvalues for specific user from firebase
+        //display these values in a list view
+        userReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                String currentSensorValue = snapshot.getValue(String.class);
+
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        mainButton.setText("Too loud!\n"+currentSensorValue);
+                        mainButton.setBackgroundResource(R.drawable.circular_button_red);
+                    }
+
+                    public void onFinish() {
+                        mainButton.setText("All good :)");
+                        mainButton.setBackgroundResource(R.drawable.circular_button_green);
+                    }
+
+                }.start();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     protected void buttonOFF(){
@@ -142,7 +182,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void buttonON(){
-        mainButton.setText("Tap to\nturn\nOFF");
+        displayWarning();
+        mainButton.setText("All good :)");
         mainButton.setBackgroundResource(R.drawable.circular_button_green);
         buttonOn = true;
     }
