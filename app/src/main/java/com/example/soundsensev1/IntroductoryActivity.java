@@ -2,12 +2,10 @@ package com.example.soundsensev1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
-public class SplashActivity extends AppCompatActivity {
+public class IntroductoryActivity extends AppCompatActivity {
 
     //this activity determines whether the user is already sign in or not.
     //if signed in they are redirected to the mainActivity
@@ -16,7 +14,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_introductory);
 
         SharedPreferencesHelper spHelper = new SharedPreferencesHelper(this);
 
