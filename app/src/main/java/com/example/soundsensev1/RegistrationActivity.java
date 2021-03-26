@@ -116,9 +116,10 @@ public class RegistrationActivity extends AppCompatActivity {
                             registerProgressBar.setVisibility(View.GONE);
                         }
                     });
-                }else{
-                    Toast.makeText(RegistrationActivity.this,"Failed to register!",Toast.LENGTH_LONG).show();
-                    registerProgressBar.setVisibility(View.GONE);
+                }
+                else{
+                        Toast.makeText(RegistrationActivity.this, "Failed to register!", Toast.LENGTH_LONG).show();
+                        registerProgressBar.setVisibility(View.GONE);
                 }
             }
         });
