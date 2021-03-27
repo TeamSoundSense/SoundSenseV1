@@ -46,11 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferencesHelper spHelper;
 
     private boolean buttonOn;
-
-    //timer
-    private static final long START_TIME_IN_MILLIS = 4000;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
-    private boolean isTimerRunning;
+    private static String pastValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sensorValues");
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
 
+        pastValue=spHelper.getRecentSensorValue();
+
+        //controls for the button
         storeUserSensorValues();
         setButtonValue();
 
@@ -151,23 +150,46 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void displayWarning(String currentSensorValue) {
+    protected void displayWarning() {
         //retrieve sensorvalues for specific user from firebase
-        Log.i("main activity", "recent value from fb1: " + currentSensorValue);
-        CountDownTimer myTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-            public void onTick(long millisUntilFinished) {
-                mTimeLeftInMillis = millisUntilFinished;
-                mainButton.setText("Too loud!\n" + currentSensorValue);
-                mainButton.setBackgroundResource(R.drawable.circular_button_red);
-            }
-            public void onFinish() {
-                mainButton.setText("All good :)");
-                mainButton.setBackgroundResource(R.drawable.circular_button_green);
-                mTimeLeftInMillis = START_TIME_IN_MILLIS;
-            }
-        };
-        myTimer.start();
+        //display these values in a list view
+        userReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
+                String currentSensorValue = spHelper.getRecentSensorValue();
+
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        if (pastValue==currentSensorValue){
+                            mainButton.setText("All good :)");
+                            mainButton.setBackgroundResource(R.drawable.circular_button_green);
+                        }
+                        else{
+                            mainButton.setText("Too loud!\n"+currentSensorValue);
+                            mainButton.setBackgroundResource(R.drawable.circular_button_red);
+                        }
+                    }
+                    public void onFinish() {
+                        mainButton.setText("All good :)");
+                        mainButton.setBackgroundResource(R.drawable.circular_button_green);
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
 
@@ -178,14 +200,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void buttonON(){
-        //displayWarning();
+        displayWarning();
         mainButton.setText("All good :)");
         mainButton.setBackgroundResource(R.drawable.circular_button_green);
         buttonOn = true;
     }
 
     protected void storeUserSensorValues() {
-
         //reference to firebase to retrieve sensor data
         inputSensorReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -193,16 +214,15 @@ public class MainActivity extends AppCompatActivity {
                 String value = snapshot.child("Analog").getValue().toString();
                 if(spHelper.getRecentSensorValue()==null){
                     spHelper.setRecentSensorValue("0");
-                    Log.i("Main activity", "recent value: " + spHelper.getRecentSensorValue());
+                    Log.i("MainActivity", "recent value: " + spHelper.getRecentSensorValue());
                 }
 
                 //if sensor value isnt the same as recent value, upload the value to the firebase database
-                if(spHelper.getRecentSensorValue().equals(value)==false) {
+                if(!spHelper.getRecentSensorValue().equals(value)) {
                     userReference.push().setValue(value);
                     //store recent sensor value in shared prefs
                     spHelper.setRecentSensorValue(value);
-                    Log.i("Main activity", "recent value: " + spHelper.getRecentSensorValue());
-                    displayWarning(value);
+                    Log.i("MainActivity", "recent value: " + spHelper.getRecentSensorValue());
                     //start service to send notification
                     startService();
                 }
@@ -264,6 +284,4 @@ public class MainActivity extends AppCompatActivity {
     protected void stopService(){
         Intent serviceIntent = new Intent(this, MyService.class);
     }
-
-
 }
