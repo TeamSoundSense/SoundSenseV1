@@ -67,7 +67,7 @@ public class DataActivity extends AppCompatActivity {
         spHelper = new SharedPreferencesHelper(this);
 
         //adapter
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fbSensorValues);
+        adapter = new ArrayAdapter<String>(this, R.layout.custom_simple_list_item_1, fbSensorValues);
 
         //load sensor value
         sensorListView = findViewById(R.id.sensorListView);
