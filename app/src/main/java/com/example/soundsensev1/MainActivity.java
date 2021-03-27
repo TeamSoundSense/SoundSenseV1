@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 String value = snapshot.child("Analog").getValue().toString();
                 if(spHelper.getRecentSensorValue()==null){
                     spHelper.setRecentSensorValue("0");
-                    Log.i("data activity", "recent value: " + spHelper.getRecentSensorValue());
+                    Log.i("Main activity", "recent value: " + spHelper.getRecentSensorValue());
                 }
 
                 //if sensor value isnt the same as recent value, upload the value to the firebase database
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     userReference.push().setValue(value);
                     //store recent sensor value in shared prefs
                     spHelper.setRecentSensorValue(value);
-                    Log.i("data activity", "recent value: " + spHelper.getRecentSensorValue());
+                    Log.i("Main activity", "recent value: " + spHelper.getRecentSensorValue());
                     displayWarning(value);
                     //start service to send notification
                     startService();
