@@ -36,13 +36,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView welcomeTextView;
     private Button mainButton;
 
-    private FirebaseUser user;
-    private String userID;
+    private static FirebaseUser user;
+    private static String userID;
 
-    private DatabaseReference sensorControlReference;
-    private DatabaseReference reference;
-    private DatabaseReference userReference;
-    private DatabaseReference inputSensorReference;
+    private static DatabaseReference sensorControlReference;
+    private static DatabaseReference reference;
+    private static DatabaseReference userReference;
+    private static DatabaseReference inputSensorReference;
     private SharedPreferencesHelper spHelper;
 
     private boolean buttonOn;
@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
 
         pastValue=spHelper.getRecentSensorValue();
-
         //controls for the button
         storeUserSensorValues();
         setButtonValue();
@@ -152,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void displayWarning() {
         //retrieve sensorvalues for specific user from firebase
-        //display these values in a list view
+        //display warnings values in activity button
         userReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
