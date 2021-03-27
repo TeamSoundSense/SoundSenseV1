@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 public class  LoginActivity extends AppCompatActivity {
 
@@ -117,8 +118,16 @@ public class  LoginActivity extends AppCompatActivity {
                     //redirect to main activity
                     goToMainActivity();
 
-                }else{
-                    Toast.makeText(LoginActivity.this,"Failed to login! Please check your credentials. ",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    try{
+                        FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                        Toast.makeText(LoginActivity.this,"Failed to login! Please check your credentials. ", Toast.LENGTH_LONG).show();
+                    }
+                    catch(Exception e){
+                        Toast.makeText(LoginActivity.this,"Connection Failure! ", Toast.LENGTH_LONG).show();
+                    }
+
                 }
                 loginProgressBar.setVisibility(View.GONE);
             }

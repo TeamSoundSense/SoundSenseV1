@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -118,8 +119,15 @@ public class RegistrationActivity extends AppCompatActivity {
                     });
                 }
                 else{
+                    try {
+                        FirebaseAuthException e = (FirebaseAuthException)task.getException();
                         Toast.makeText(RegistrationActivity.this, "Failed to register!", Toast.LENGTH_LONG).show();
                         registerProgressBar.setVisibility(View.GONE);
+                    }
+                    catch(Exception e){
+                        Toast.makeText(RegistrationActivity.this, "Connection Failure! ", Toast.LENGTH_LONG).show();
+                        registerProgressBar.setVisibility(View.GONE);
+                    }
                 }
             }
         });
