@@ -1,6 +1,7 @@
 package com.example.soundsensev1;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -10,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,12 +37,20 @@ public class MainActivity extends AppCompatActivity {
     private Button mainButton;
 
     private FirebaseUser user;
-    private DatabaseReference reference;
     private String userID;
 
     private DatabaseReference sensorControlReference;
+    private DatabaseReference reference;
+    private DatabaseReference userReference;
+    private DatabaseReference inputSensorReference;
+    private SharedPreferencesHelper spHelper;
 
     private boolean buttonOn;
+
+    //timer
+    private static final long START_TIME_IN_MILLIS = 4000;
+    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private boolean isTimerRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         welcomeTextView = findViewById(R.id.welcomeTextView);
         mainButton = findViewById(R.id.mainButton);
+        spHelper = new SharedPreferencesHelper(this);
 
 
         //firebase authentication
@@ -64,8 +77,15 @@ public class MainActivity extends AppCompatActivity {
             userID = user.getUid();
         }
 
+        //reference to firebase to retrieve input sensor data
+        inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
+
         //button settings
+        userReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sensorValues");
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
+
+        storeUserSensorValues();
         setButtonValue();
 
         //get user info from firebase
@@ -131,9 +151,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void displayWarning(){
-        //TODO: write this method
+    protected void displayWarning(String currentSensorValue) {
+        //retrieve sensorvalues for specific user from firebase
+        Log.i("main activity", "recent value from fb1: " + currentSensorValue);
+        CountDownTimer myTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+            public void onTick(long millisUntilFinished) {
+                mTimeLeftInMillis = millisUntilFinished;
+                mainButton.setText("Too loud!\n" + currentSensorValue);
+                mainButton.setBackgroundResource(R.drawable.circular_button_red);
+            }
+            public void onFinish() {
+                mainButton.setText("All good :)");
+                mainButton.setBackgroundResource(R.drawable.circular_button_green);
+                mTimeLeftInMillis = START_TIME_IN_MILLIS;
+            }
+        };
+        myTimer.start();
+
     }
+
 
     protected void buttonOFF(){
         mainButton.setText("Tap to\nturn\nON");
@@ -142,10 +178,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void buttonON(){
-        mainButton.setText("Tap to\nturn\nOFF");
+        //displayWarning();
+        mainButton.setText("All good :)");
         mainButton.setBackgroundResource(R.drawable.circular_button_green);
         buttonOn = true;
     }
+
+    protected void storeUserSensorValues() {
+
+        //reference to firebase to retrieve sensor data
+        inputSensorReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String value = snapshot.child("Analog").getValue().toString();
+                if(spHelper.getRecentSensorValue()==null){
+                    spHelper.setRecentSensorValue("0");
+                    Log.i("Main activity", "recent value: " + spHelper.getRecentSensorValue());
+                }
+
+                //if sensor value isnt the same as recent value, upload the value to the firebase database
+                if(spHelper.getRecentSensorValue().equals(value)==false) {
+                    userReference.push().setValue(value);
+                    //store recent sensor value in shared prefs
+                    spHelper.setRecentSensorValue(value);
+                    Log.i("Main activity", "recent value: " + spHelper.getRecentSensorValue());
+                    displayWarning(value);
+                    //start service to send notification
+                    startService();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Sensor Value error!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -184,5 +254,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent (this,DataActivity.class);
         startActivity(intent);
     }
+
+    //method to start foreground service for sending notifications
+    protected void startService(){
+        Intent serviceIntent = new Intent(this, MyService.class);
+        ContextCompat.startForegroundService(this,serviceIntent);
+    }
+
+    protected void stopService(){
+        Intent serviceIntent = new Intent(this, MyService.class);
+    }
+
 
 }

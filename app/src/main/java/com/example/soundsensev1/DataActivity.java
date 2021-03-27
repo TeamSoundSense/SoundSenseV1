@@ -77,7 +77,6 @@ public class DataActivity extends AppCompatActivity {
         //reference to firebase to retrieve input sensor data
         inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
 
-        storeUserSensorValues();
         printUserSensorValues();
 
         deleteListButton = findViewById(R.id.deleteListButton);
@@ -137,6 +136,7 @@ public class DataActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String currentSensorValue = snapshot.getValue(String.class);
+                Log.i("data activity", "recent value from fb: " + currentSensorValue);
                     fbSensorValues.add(currentSensorValue);
                     adapter.notifyDataSetChanged();
             }
