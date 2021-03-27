@@ -15,10 +15,10 @@
 
     <ListView
         android:id="@+id/sensorListView"
-        android:layout_width="335dp"
-        android:layout_height="531dp"
+        android:layout_width="339dp"
+        android:layout_height="505dp"
         android:layout_marginStart="38dp"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="38dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toTopOf="@+id/deleteListButton"
