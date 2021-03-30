@@ -31,6 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView welcomeTextView;
@@ -47,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean buttonOn;
     private static String pastValue;
+
+
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+    private String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,6 +218,13 @@ public class MainActivity extends AppCompatActivity {
         inputSensorReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                //timeStamp initialization
+                calendar = Calendar.getInstance();
+                dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+                date = dateFormat.format(calendar.getTime());
+                String dateString = "    \nTime: "+ date;
+
                 String value = snapshot.child("Analog").getValue().toString();
                 if(spHelper.getRecentSensorValue()==null){
                     spHelper.setRecentSensorValue("0");
@@ -218,12 +233,12 @@ public class MainActivity extends AppCompatActivity {
 
                 //if sensor value isnt the same as recent value, upload the value to the firebase database
                 if(!spHelper.getRecentSensorValue().equals(value)) {
-                    userReference.push().setValue(value);
-                    //store recent sensor value in shared prefs
-                    spHelper.setRecentSensorValue(value);
-                    Log.i("MainActivity", "recent value: " + spHelper.getRecentSensorValue());
-                    //start service to send notification
-                    startService();
+                        userReference.push().setValue("Volume Level: "+value+dateString);
+                        //store recent sensor value in shared prefs
+                        spHelper.setRecentSensorValue(value);
+                        Log.i("MainActivity", "recent value: " + spHelper.getRecentSensorValue());
+                        //start service to send notification
+                        startService();
                 }
             }
 
