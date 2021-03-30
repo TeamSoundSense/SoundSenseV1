@@ -36,7 +36,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DataActivity extends AppCompatActivity {
@@ -45,6 +47,9 @@ public class DataActivity extends AppCompatActivity {
     private DatabaseReference inputSensorReference;
     private DatabaseReference userReference;
     private ArrayList<String> fbSensorValues = new ArrayList<>();
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+    private String date;
 
     private SharedPreferencesHelper spHelper;
 
@@ -132,11 +137,18 @@ public class DataActivity extends AppCompatActivity {
 
         //retrieve sensorvalues for specific user from firebase
         //display these values in a list view
+
+        //timeStamp initialization
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        date = dateFormat.format(calendar.getTime());
+
         userReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String currentSensorValue = snapshot.getValue(String.class);
                 Log.i("data activity", "recent value from fb: " + currentSensorValue);
+                    String dateString = " , Time: "+ date;
                     fbSensorValues.add(currentSensorValue);
                     adapter.notifyDataSetChanged();
             }
