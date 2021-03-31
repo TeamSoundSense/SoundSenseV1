@@ -32,7 +32,7 @@ public class MyService extends Service {
         Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("SoundSense")
-                .setContentText("Shhh! You're being too loud")
+                .setContentText("Shhh! You're being too loud.")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentIntent(pendingIntent)

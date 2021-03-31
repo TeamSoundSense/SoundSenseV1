@@ -3,7 +3,10 @@ package com.example.soundsensev1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,11 +23,15 @@ public class SettingsActivity extends AppCompatActivity {
 
     private DatabaseReference sensorControlReference;
     private Switch controlSwitch;
+    private Switch controlSwitch2;
+    private SharedPreferencesHelper spHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        spHelper = new SharedPreferencesHelper(this);
 
         //toolbar settings
         Toolbar toolbar = findViewById(R.id.mainToolbar);
@@ -34,9 +41,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         //control switch initialization
         controlSwitch = findViewById(R.id.controlSwitch);
+        controlSwitch2 = findViewById(R.id.controlSwitch2);
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
 
-        setControlSwitchValue();
+        setControlSwitchValue(); // Device ON/OFF switch
+        setControlSwitch2Value(); //Notifications ON/OFF switch
+
 
     }
 
@@ -74,6 +84,27 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(SettingsActivity.this, "Control Switch error!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    protected void setControlSwitch2Value(){
+        if(spHelper.getNotification()==false){
+            controlSwitch2.setChecked(false);
+        }else{
+            controlSwitch2.setChecked(true);
+        }
+
+
+        controlSwitch2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(controlSwitch2.isChecked()){
+                    spHelper.setNotification(true);
+                }
+                else{
+                    spHelper.setNotification(false);
+                }
             }
         });
     }

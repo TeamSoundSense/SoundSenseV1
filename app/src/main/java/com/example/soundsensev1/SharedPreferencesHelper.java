@@ -31,6 +31,16 @@ public class SharedPreferencesHelper {
         return sharedPreferences.getString("recent_sensor_value",null);
     }
 
+    public void setNotification(Boolean control){
+        SharedPreferences.Editor edt = sharedPreferences.edit();
+        edt.putBoolean("notif_control", control);
+        edt.commit();
+    }
+
+    public Boolean getNotification(){
+        return sharedPreferences.getBoolean("notif_control",true);
+    }
+
 
 
 

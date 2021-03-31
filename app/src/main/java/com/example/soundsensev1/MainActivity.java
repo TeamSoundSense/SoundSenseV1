@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     public void onFinish() {
-                        mainButton.setText("All good :)");
+                        mainButton.setText("All Good!");
                         mainButton.setBackgroundResource(R.drawable.circular_button_green);
                     }
                 }.start();
@@ -234,11 +234,16 @@ public class MainActivity extends AppCompatActivity {
                 //if sensor value isnt the same as recent value, upload the value to the firebase database
                 if(!spHelper.getRecentSensorValue().equals(value)) {
                         userReference.push().setValue("Volume Level: "+value+dateString);
+                  
                         //store recent sensor value in shared prefs
                         spHelper.setRecentSensorValue(value);
                         Log.i("MainActivity", "recent value: " + spHelper.getRecentSensorValue());
+                  
                         //start service to send notification
+                         if(spHelper.getNotification()==true){
                         startService();
+                    }
+
                 }
             }
 
