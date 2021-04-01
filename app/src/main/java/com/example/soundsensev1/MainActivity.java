@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,15 +47,17 @@ public class MainActivity extends AppCompatActivity {
     private static DatabaseReference reference;
     private static DatabaseReference userReference;
     private static DatabaseReference inputSensorReference;
+    private static DatabaseReference analogReference;
     private SharedPreferencesHelper spHelper;
 
     private boolean buttonOn;
-    private static String pastValue;
 
 
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String date;
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +86,16 @@ public class MainActivity extends AppCompatActivity {
 
         //reference to firebase to retrieve input sensor data
         inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
+        analogReference = FirebaseDatabase.getInstance().getReference().child("Sensor").child("Analog");
 
         //button settings
         userReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sensorValues");
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
 
-        pastValue=spHelper.getRecentSensorValue();
         //controls for the button
+        analogReference.setValue(0);
+
         storeUserSensorValues();
         setButtonValue();
 
@@ -158,21 +163,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void displayWarning() {
+
         //retrieve sensorvalues for specific user from firebase
         //display warnings values in activity button
-        userReference.addChildEventListener(new ChildEventListener() {
+        analogReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                String currentSensorValue = spHelper.getRecentSensorValue();
+                int currentSensorValue = Integer.parseInt(Objects.requireNonNull(snapshot.getValue()).toString());
 
                 new CountDownTimer(2000, 1000) {
                     public void onTick(long millisUntilFinished) {
-                        if (pastValue==currentSensorValue){
-                            mainButton.setText("All good :)");
-                            mainButton.setBackgroundResource(R.drawable.circular_button_green);
-                        }
-                        else{
+                        if (currentSensorValue!=0){
                             mainButton.setText("Too loud!\n"+currentSensorValue);
                             mainButton.setBackgroundResource(R.drawable.circular_button_red);
                         }
@@ -185,20 +187,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Warning error!", Toast.LENGTH_LONG).show();
             }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
-
 
     protected void buttonOFF(){
         mainButton.setText("Tap to\nturn\nON");
@@ -208,14 +201,14 @@ public class MainActivity extends AppCompatActivity {
 
     protected void buttonON(){
         displayWarning();
-        mainButton.setText("All good :)");
+        mainButton.setText("All good!");
         mainButton.setBackgroundResource(R.drawable.circular_button_green);
         buttonOn = true;
     }
 
     protected void storeUserSensorValues() {
         //reference to firebase to retrieve sensor data
-        inputSensorReference.addValueEventListener(new ValueEventListener() {
+        analogReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -225,14 +218,15 @@ public class MainActivity extends AppCompatActivity {
                 date = dateFormat.format(calendar.getTime());
                 String dateString = "    \nTime: "+ date;
 
-                String value = snapshot.child("Analog").getValue().toString();
+                String value = Objects.requireNonNull(snapshot.getValue()).toString();
+
                 if(spHelper.getRecentSensorValue()==null){
                     spHelper.setRecentSensorValue("0");
                     Log.i("MainActivity", "recent value: " + spHelper.getRecentSensorValue());
                 }
 
                 //if sensor value isnt the same as recent value, upload the value to the firebase database
-                if(!spHelper.getRecentSensorValue().equals(value)) {
+                if (!spHelper.getRecentSensorValue().equals(value) && Integer.parseInt(value)!=0) {
                         userReference.push().setValue("Volume Level: "+value+dateString);
                   
                         //store recent sensor value in shared prefs
@@ -240,10 +234,9 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("MainActivity", "recent value: " + spHelper.getRecentSensorValue());
                   
                         //start service to send notification
-                         if(spHelper.getNotification()==true){
+                         if(spHelper.getNotification()){
                         startService();
                     }
-
                 }
             }
 
