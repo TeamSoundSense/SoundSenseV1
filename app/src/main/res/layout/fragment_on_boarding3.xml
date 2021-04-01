@@ -83,7 +83,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
-        android:text="Enjoy playing with your friends without worrying about bothering your family or roommates."
+        android:text="Day 4: He is still hiccuping pls help."
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
