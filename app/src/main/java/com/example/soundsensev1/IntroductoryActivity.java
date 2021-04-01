@@ -50,7 +50,7 @@ public class IntroductoryActivity extends AppCompatActivity {
         anim = AnimationUtils.loadAnimation(this, R.anim.o_b_anim);
         viewPager.startAnimation(anim);
 
-        splashImg.animate().translationY(-1600).setDuration(1000).setStartDelay(4000);
+        splashImg.animate().translationY(-2000).setDuration(1000).setStartDelay(4000);
         logo.animate().translationY(1400).setDuration(1000).setStartDelay(4000);
         appName.animate().translationY(1400).setDuration(1000).setStartDelay(4000);
         lottieAnimationView.animate().translationY(1400).setDuration(1000).setStartDelay(4000);

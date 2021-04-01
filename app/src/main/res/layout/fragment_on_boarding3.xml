@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange_red"
+    android:background="@color/purple_la_baguette"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -24,12 +24,12 @@
         android:layout_marginTop="25dp"
         android:text="SoundSense"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/imgYou"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/imgYou"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0" />
 
@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Gamers"
+        android:text="You"
         android:textColor="@color/white"
         android:textSize="56sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -83,23 +83,23 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
-        android:text="Write something that this app is for our dear gamers"
+        android:text="Enjoy playing with your friends without worrying about bothering your family or roommates."
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintHeight_percent="0.11"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_bias="0.1"
         app:layout_constraintWidth_percent="0.5" />
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="10dp"
         android:src="@drawable/tab3_white"
-        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintVertical_bias="0.5"
         app:layout_constraintHorizontal_bias="0"
         android:layout_marginLeft="5dp"
         app:layout_constraintBottom_toBottomOf="parent"

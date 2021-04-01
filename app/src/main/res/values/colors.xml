@@ -17,4 +17,17 @@
     <color name="red_background1">#da485c</color>
     <color name="blue_background1">#152643</color>
     <color name="light_blue_background1">#609eb4</color>
+    <color name="dark_green_background1">#05282c</color>
+    <color name="dark_red">#8d3330</color>
+    <color name="dusty_darker_blue">#044C65</color>
+    <color name="dusty_lighter_blue">#4D7F91</color>
+    <color name="dusty_navy_blue">#181727</color>
+    <color name="darkness">#040507</color>
+    <color name="Loutfi">#1b93a5</color>
+    <color name="Loutfi_orange">#f2c694</color>
+    <color name="Clara">#3E2353</color>
+    <color name="blue_palette">#101E33</color>
+    <color name="purple_la_baguette">#1A0E2D</color>
+    <color name="green_le_tapette">#072818</color>
+    <color name="Liv_la_vida_loca">#426F7A</color>
 </resources>

@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue_palette"
     tools:context=".IntroductoryActivity">
 
     <ImageView
         android:id="@+id/imgBackground"
         android:layout_width="wrap_content"
-        android:layout_height="900dp"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:src="@mipmap/backgound1"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,7 +22,7 @@
         android:id="@+id/logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/soundsense_logo_img"
+        android:src="@drawable/empty"
         app:layout_constraintVertical_bias="0.1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
