@@ -9,14 +9,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ViewParent;
+import android.os.CountDownTimer;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import java.lang.annotation.AnnotationTypeMismatchException;
+
 
 public class IntroductoryActivity extends AppCompatActivity {
 
@@ -55,17 +55,21 @@ public class IntroductoryActivity extends AppCompatActivity {
         appName.animate().translationY(1400).setDuration(1000).setStartDelay(4000);
         lottieAnimationView.animate().translationY(1400).setDuration(1000).setStartDelay(4000);
 
+        SharedPreferencesHelper spHelper = new SharedPreferencesHelper(this);
+        if (spHelper.isUserLoggedIn())
+        {
+            new CountDownTimer(3000, 1000) {
+                public void onTick(long millisUntilFinished) {
 
+                }
+                public void onFinish() {
+                    goToMainActivity();
+                }
+            }.start();
 
-       //SharedPreferencesHelper spHelper = new SharedPreferencesHelper(this);
-
-        /*
-        if (spHelper.isUserLoggedIn()==true) {
-            goToMainActivity();
-        }else {
-            goToLoginActivity();
         }
-        */
+
+
 
     }
 
