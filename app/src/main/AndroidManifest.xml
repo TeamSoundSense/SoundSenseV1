@@ -3,7 +3,7 @@
     package="com.example.soundsensev1">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SoundSenseV1">
+        <activity android:name=".LoginActivity2"></activity>
         <activity android:name=".IntroductoryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,8 +33,9 @@
         <activity
             android:name=".ProfileActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity"/>
-        <service android:name=".MyService"/>
+        <activity android:name=".MainActivity" />
+
+        <service android:name=".MyService" />
     </application>
 
 </manifest>
