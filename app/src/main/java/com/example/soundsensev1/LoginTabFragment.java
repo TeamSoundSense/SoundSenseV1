@@ -45,7 +45,7 @@ public class LoginTabFragment extends Fragment {
         loginButton = root.findViewById(R.id.loginSignInButton);
         loginProgressBar = root.findViewById(R.id.loginProgressBar);
 
-        /*emailET.setTranslationX(800);
+        emailET.setTranslationX(800);
         passwordET.setTranslationX(800);
         forgotPasswordTV.setTranslationX(800);
         loginButton.setTranslationX(800);
@@ -53,7 +53,7 @@ public class LoginTabFragment extends Fragment {
         emailET.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(300).start();
         passwordET.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
         forgotPasswordTV.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
-        loginButton.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();*/
+        loginButton.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
 
         spHelper = new SharedPreferencesHelper(container.getContext());
         mAuth = FirebaseAuth.getInstance();

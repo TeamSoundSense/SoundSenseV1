@@ -148,7 +148,7 @@ public class SignUpTabFragment extends Fragment {
     }
 
     protected void goToLoginActivity(){
-        Intent intent = new Intent (getContext(),LoginActivity2.class);
+        Intent intent = new Intent (getContext(),LoginActivity.class);
         startActivity(intent);
     }
 }
