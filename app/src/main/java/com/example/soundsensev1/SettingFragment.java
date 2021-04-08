@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -23,8 +24,11 @@ import com.google.firebase.database.ValueEventListener;
 public class SettingFragment extends Fragment {
 
     private DatabaseReference sensorControlReference;
+    private DatabaseReference sensorRangeReference;
     private Switch controlSwitch;
     private Switch controlSwitch2;
+    private Button sensitiveButton;
+    private Button loudButton;
     private SharedPreferencesHelper spHelper;
 
     @Nullable
@@ -41,12 +45,27 @@ public class SettingFragment extends Fragment {
         //control switch initialization
         controlSwitch = root.findViewById(R.id.controlSwitch);
         controlSwitch2 = root.findViewById(R.id.controlSwitch2);
+        sensitiveButton = root.findViewById(R.id.sensitiveButton);
+        loudButton = root.findViewById(R.id.loudButton);
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
+        sensorRangeReference = FirebaseDatabase.getInstance().getReference().child("Range").child("Number");
 
         setControlSwitchValue(); // Device ON/OFF switch
         setControlSwitch2Value(); //Notifications ON/OFF switch
 
+        sensitiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sensorRangeReference.setValue("1");
+            }
+        });
 
+        loudButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sensorRangeReference.setValue("2");
+            }
+        });
         return root;
     }
 
@@ -108,4 +127,6 @@ public class SettingFragment extends Fragment {
             }
         });
     }
+
+
 }
