@@ -102,12 +102,12 @@
         android:layout_width="50dp"
         android:layout_height="10dp"
         android:src="@drawable/tab2_white"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_bias="0.8"
         app:layout_constraintHorizontal_bias="0"
         android:layout_marginLeft="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView4"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
