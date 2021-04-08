@@ -87,7 +87,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text=""
+        android:text="If you are a gamer with anger issues or someone who cannot control their voice while on the phone or while talking, use this mode to get a warning whenever you are obnoxiously loud to avoid annoying everyone around you."
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -97,7 +97,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:layout_constraintVertical_bias="0"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintWidth_percent="0.65" />
 
     <ImageView
         android:layout_width="50dp"

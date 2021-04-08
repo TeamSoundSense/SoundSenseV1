@@ -86,7 +86,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Whether you need complete calm or "
+        android:text="Whether you are in an environment that requires silence or you are trying not to be too loud, this app will help you control your voice by tracking when you go over your selected threshold. "
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -96,7 +96,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:layout_constraintVertical_bias="0"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintWidth_percent="0.65" />
 
     <ImageView
         android:layout_width="50dp"
