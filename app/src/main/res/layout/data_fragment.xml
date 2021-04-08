@@ -30,4 +30,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/question_mark"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/white_question_mark"
+        app:layout_constraintBottom_toBottomOf="@+id/deleteListButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toEndOf="@+id/deleteListButton"
+        app:layout_constraintTop_toTopOf="@+id/deleteListButton" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
