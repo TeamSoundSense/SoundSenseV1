@@ -1,17 +1,18 @@
 package com.example.soundsensev1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,35 +20,34 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingFragment extends Fragment {
 
     private DatabaseReference sensorControlReference;
     private Switch controlSwitch;
     private Switch controlSwitch2;
     private SharedPreferencesHelper spHelper;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ViewGroup root = (ViewGroup)inflater.inflate(R.layout.setting_fragment, container, false);
 
-        spHelper = new SharedPreferencesHelper(this);
+        Toolbar toolbar = root.findViewById(R.id.mainToolbar);
+        getActivity().setActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Settings");
 
-        //toolbar settings
-        Toolbar toolbar = findViewById(R.id.mainToolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Settings");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        spHelper = new SharedPreferencesHelper(getActivity());
 
         //control switch initialization
-        controlSwitch = findViewById(R.id.controlSwitch);
-        controlSwitch2 = findViewById(R.id.controlSwitch2);
+        controlSwitch = root.findViewById(R.id.controlSwitch);
+        controlSwitch2 = root.findViewById(R.id.controlSwitch2);
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
 
         setControlSwitchValue(); // Device ON/OFF switch
         setControlSwitch2Value(); //Notifications ON/OFF switch
 
 
+        return root;
     }
 
     protected void setControlSwitchValue(){
@@ -83,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SettingsActivity.this, "Control Switch error!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Control Switch error!", Toast.LENGTH_LONG).show();
             }
         });
     }

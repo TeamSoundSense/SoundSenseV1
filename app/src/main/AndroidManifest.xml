@@ -22,18 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".PasswordActivity" />
-        <activity
-            android:name=".DataActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".ProfileActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity"/>
+        <service android:name=".MyService"/>
 
-        <service android:name=".MyService" />
     </application>
 
 </manifest>

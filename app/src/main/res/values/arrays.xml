@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="id_activityScreenTitles">
+
+        <item></item>
+        <item>Button</item>
+        <item>My Profile</item>
+        <item>Data</item>
+        <item>Settings</item>
+        <item></item>
+        <item>Log out</item>
+
+    </string-array>
+    
+    <array name="id_activityScreenIcons">
+
+        <item>@drawable/meeting_img</item>
+        <item>@drawable/right_arrow</item>
+        <item>@drawable/you_img</item>
+        <item>@drawable/soundsense_logo_img</item>
+        <item>@drawable/right_arrow</item>
+        <item>@drawable/soundsense_logo</item>
+        <item>@drawable/meeting_img</item>
+
+    </array>
+
+
+    
+</resources>

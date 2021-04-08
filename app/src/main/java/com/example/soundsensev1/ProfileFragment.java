@@ -1,34 +1,35 @@
 package com.example.soundsensev1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileFragment extends Fragment {
 
     private EditText editName;
     private EditText editEmail;
@@ -42,24 +43,23 @@ public class ProfileActivity extends AppCompatActivity {
 
     private DatabaseReference userReference;
 
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ViewGroup root = (ViewGroup)inflater.inflate(R.layout.profile_fragment, container, false);
 
-        //toolbar settings
-        Toolbar toolbar = findViewById(R.id.mainToolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Profile");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
 
-        spHelper = new SharedPreferencesHelper(this);
+        Toolbar toolbar = root.findViewById(R.id.mainToolbar);
+        getActivity().setActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Profile");
+
+        spHelper = new SharedPreferencesHelper(getActivity());
 
         //initializing editTexts and button
-        editName = findViewById(R.id.editProfileName);
-        editEmail = findViewById(R.id.editProfileEmail);
-        saveButton = findViewById(R.id.saveButton);
+        editName = root.findViewById(R.id.editProfileName);
+        editEmail = root.findViewById(R.id.editProfileEmail);
+        saveButton = root.findViewById(R.id.saveButton);
 
 
         //By default have the editTexts not be editable by user
@@ -91,19 +91,21 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ProfileActivity.this,"User info error!",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"User info error!",Toast.LENGTH_LONG).show();
 
             }
         });
 
         exitEditMode();
 
+        return root;
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //MenuInflater inflater = getActivity().getMenuInflater();
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.profile_menu, menu);
-        return true;
     }
 
     @Override
@@ -142,16 +144,16 @@ public class ProfileActivity extends AppCompatActivity {
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 user.updateEmail(String.valueOf(editEmail.getText()))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            final String TAG = "EmailUpdate";
-                            Log.d(TAG, "User email address updated.");
-                        }
-                    }
-                });
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    final String TAG = "EmailUpdate";
+                                    Log.d(TAG, "User email address updated.");
+                                }
+                            }
+                        });
 
-                Toast toast = Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Saved", Toast.LENGTH_LONG);
                 exitEditMode();
 
             }
@@ -175,7 +177,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void goToLoginActivity(){
-        Intent intent = new Intent (this,LoginActivity.class);
+        Intent intent = new Intent (getActivity(),LoginActivity.class);
         startActivity(intent);
     }
 }
