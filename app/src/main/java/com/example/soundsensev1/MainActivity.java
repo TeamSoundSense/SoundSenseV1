@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final String TAG = "MainActivity";
      */
 
+    private SharedPreferencesHelper spHelper;
+
     private static final int POS_CLOSE = 0;
     private static final int POS_BUTTON = 1;
     private static final int POS_MY_PROFILE = 2;
@@ -83,10 +85,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     private SlidingRootNav slidingRootNav;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        spHelper = new SharedPreferencesHelper(this);
 
         //toolbar settings
         Toolbar toolbar = findViewById(R.id.mainToolbar);
@@ -184,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 .withIconTint(color(R.color.white))
                 .withTextTint(color(R.color.white))
                 .withSelectedIconTint(color(R.color.white))
-                .withSelectedIconTint(color(R.color.white));
+                .withSelectedTextTint(color(R.color.white));
     }
 
     @ColorInt
@@ -240,12 +245,20 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         }
 
         else if (position == POS_LOGOUT){
-            finish();
+            FirebaseAuth.getInstance().signOut();
+            //edit shared preferences to set activity_executed to false
+            spHelper.setUserLogIn(false);
+            goToLoginActivity();
         }
 
         slidingRootNav.closeMenu();
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    protected void goToLoginActivity(){
+        Intent intent = new Intent (this,LoginActivity.class);
+        startActivity(intent);
     }
     /*
 

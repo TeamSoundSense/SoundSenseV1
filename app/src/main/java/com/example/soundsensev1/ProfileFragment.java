@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,6 +49,10 @@ public class ProfileFragment extends Fragment {
         ViewGroup root = (ViewGroup)inflater.inflate(R.layout.profile_fragment, container, false);
 
         setHasOptionsMenu(true);
+
+        Toolbar toolbar = root.findViewById(R.id.mainToolbar);
+        getActivity().setActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Profile");
 
         spHelper = new SharedPreferencesHelper(getActivity());
 
@@ -95,10 +101,11 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getActivity().getMenuInflater();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //MenuInflater inflater = getActivity().getMenuInflater();
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.profile_menu, menu);
-        return true;
     }
 
     @Override

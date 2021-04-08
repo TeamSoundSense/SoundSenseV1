@@ -23,15 +23,6 @@
         <activity android:name=".PasswordActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
-        <activity
-            android:name=".DataActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".ProfileActivity"
-            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity"/>
         <service android:name=".MyService"/>
     </application>

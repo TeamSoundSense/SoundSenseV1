@@ -15,13 +15,13 @@
     
     <array name="id_activityScreenIcons">
 
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
+        <item>@drawable/meeting_img</item>
+        <item>@drawable/right_arrow</item>
+        <item>@drawable/you_img</item>
+        <item>@drawable/soundsense_logo_img</item>
+        <item>@drawable/right_arrow</item>
+        <item>@drawable/soundsense_logo</item>
+        <item>@drawable/meeting_img</item>
 
     </array>
 

@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -59,6 +61,10 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup)inflater.inflate(R.layout.main_fragment, container, false);
+
+        Toolbar toolbar = root.findViewById(R.id.mainToolbar);
+        getActivity().setActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("SoundSense");
 
         welcomeTextView = root.findViewById(R.id.welcomeTextView);
         mainButton = root.findViewById(R.id.mainButton);
@@ -262,21 +268,6 @@ public class MainFragment extends Fragment {
         }
     }
      */
-
-    protected void goToProfileActivity(){
-        Intent intent = new Intent (getActivity(),ProfileActivity.class);
-        startActivity(intent);
-    }
-
-    protected void goToSettingsActivity(){
-        Intent intent = new Intent (getActivity(),SettingsActivity.class);
-        startActivity(intent);
-    }
-
-    protected void goToDataActivity(){
-        Intent intent = new Intent (getActivity(),DataActivity.class);
-        startActivity(intent);
-    }
 
     //method to start foreground service for sending notifications
     protected void startService(){
