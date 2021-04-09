@@ -30,4 +30,6 @@
     <color name="purple_la_baguette">#1A0E2D</color>
     <color name="green_le_tapette">#072818</color>
     <color name="Liv_la_vida_loca">#426F7A</color>
+    <color name="transparent">#99052355</color>
+    <color name="transparent_silver">#CCC0C0C0</color>
 </resources>
