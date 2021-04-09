@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/vie_bg2"
-        android:text="\n   History page gives you a\n   list ofall the times you\n   have passed the threshold. \n"
+        android:text="\n   History page gives you a\n   list of all the times you\n   have passed the threshold. \n"
         android:textColor="@color/white"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/question_mark"
