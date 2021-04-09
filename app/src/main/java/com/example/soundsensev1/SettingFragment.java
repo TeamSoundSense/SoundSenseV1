@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -29,7 +31,10 @@ public class SettingFragment extends Fragment {
     private Switch controlSwitch2;
     private Button sensitiveButton;
     private Button loudButton;
+    private ImageView helpImage;
+    private TextView helpText;
     private SharedPreferencesHelper spHelper;
+    private int option;
 
     @Nullable
     @Override
@@ -47,16 +52,44 @@ public class SettingFragment extends Fragment {
         controlSwitch2 = root.findViewById(R.id.controlSwitch2);
         sensitiveButton = root.findViewById(R.id.sensitiveButton);
         loudButton = root.findViewById(R.id.loudButton);
+        helpImage = root.findViewById(R.id.questionMark);
+        helpText = root.findViewById(R.id.helpText);
+
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
         sensorRangeReference = FirebaseDatabase.getInstance().getReference().child("Range").child("Number");
 
         setControlSwitchValue(); // Device ON/OFF switch
         setControlSwitch2Value(); //Notifications ON/OFF switch
 
+        sensorRangeReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int mode = Integer.parseInt(snapshot.getValue().toString());
+                if (mode == 1){
+                    sensitiveButton.setBackgroundResource(R.drawable.button_bg2);
+                    loudButton.setBackgroundResource(R.drawable.button_bg);
+                }
+                else if (mode == 2){
+                    sensitiveButton.setBackgroundResource(R.drawable.button_bg);
+                    loudButton.setBackgroundResource(R.drawable.button_bg2);
+                }
+                else {
+                    sensorRangeReference.setValue("1");
+                    sensitiveButton.setBackgroundResource(R.drawable.button_bg2);
+                    loudButton.setBackgroundResource(R.drawable.button_bg);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
         sensitiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sensorRangeReference.setValue("1");
+                sensitiveButton.setBackgroundResource(R.drawable.button_bg2);
+                loudButton.setBackgroundResource(R.drawable.button_bg);
             }
         });
 
@@ -64,8 +97,28 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sensorRangeReference.setValue("2");
+                sensitiveButton.setBackgroundResource(R.drawable.button_bg);
+                loudButton.setBackgroundResource(R.drawable.button_bg2);
             }
         });
+
+        helpImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                //DataHelpDialogFragment dataHelpDialogFragment = new DataHelpDialogFragment();
+                //dataHelpDialogFragment.show(getFragmentManager(), "DataHelpDialogFragment");
+
+                if(option == 0){
+                    helpText.setVisibility(View.VISIBLE);
+                    option = 1;
+                }
+                else if (option == 1){
+                    helpText.setVisibility(View.GONE);
+                    option = 0;
+                }
+            }
+        });
+
         return root;
     }
 
