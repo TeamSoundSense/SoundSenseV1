@@ -49,7 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/vie_bg3"
-        android:text="  Notifications ON/OFF "
+        android:text="  Phone Notifications ON/OFF "
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintWidth_percent=".9"
