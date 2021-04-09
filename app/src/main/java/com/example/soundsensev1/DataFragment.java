@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 
 public class DataFragment extends Fragment {
 
+    protected TextView helpText;
+    protected ImageView questionMark;
     protected ListView sensorListView;
     private DatabaseReference inputSensorReference;
     private DatabaseReference userReference;
@@ -39,6 +43,8 @@ public class DataFragment extends Fragment {
 
     private Button deleteListButton;
     ArrayAdapter<String> adapter;
+
+    private int option = 0;
 
     @Nullable
     @Override
@@ -64,6 +70,26 @@ public class DataFragment extends Fragment {
         inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
 
         printUserSensorValues();
+
+        helpText = root.findViewById(R.id.help_text);
+
+        questionMark = root.findViewById(R.id.question_mark);
+        questionMark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                //DataHelpDialogFragment dataHelpDialogFragment = new DataHelpDialogFragment();
+                //dataHelpDialogFragment.show(getFragmentManager(), "DataHelpDialogFragment");
+
+                if(option == 0){
+                    helpText.setVisibility(View.VISIBLE);
+                    option = 1;
+                }
+                else if (option == 1){
+                    helpText.setVisibility(View.GONE);
+                    option = 0;
+                }
+            }
+        });
 
         deleteListButton = root.findViewById(R.id.deleteListButton);
         deleteListButton.setOnClickListener(new View.OnClickListener() {

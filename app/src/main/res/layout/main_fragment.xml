@@ -25,9 +25,6 @@
         android:id="@+id/mainButton"
         android:layout_width="195dp"
         android:layout_height="197dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginEnd="108dp"
-        android:layout_marginBottom="267dp"
         android:background="@drawable/circular_button"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -36,8 +33,8 @@
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeTextView"
+        app:layout_constraintVertical_bias="0.223" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
