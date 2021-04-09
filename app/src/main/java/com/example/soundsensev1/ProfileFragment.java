@@ -153,7 +153,7 @@ public class ProfileFragment extends Fragment {
                             }
                         });
 
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Saved", Toast.LENGTH_LONG);
+                Toast.makeText(getActivity().getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
                 exitEditMode();
 
             }
