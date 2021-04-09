@@ -74,7 +74,7 @@ public class SettingFragment extends Fragment {
                     loudButton.setBackgroundResource(R.drawable.button_bg2);
                 }
                 else {
-                    sensorRangeReference.setValue("1");
+                    sensorRangeReference.setValue(1);
                     sensitiveButton.setBackgroundResource(R.drawable.button_bg2);
                     loudButton.setBackgroundResource(R.drawable.button_bg);
                 }
@@ -87,7 +87,7 @@ public class SettingFragment extends Fragment {
         sensitiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sensorRangeReference.setValue("1");
+                sensorRangeReference.setValue(1);
                 sensitiveButton.setBackgroundResource(R.drawable.button_bg2);
                 loudButton.setBackgroundResource(R.drawable.button_bg);
             }
@@ -96,7 +96,7 @@ public class SettingFragment extends Fragment {
         loudButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sensorRangeReference.setValue("2");
+                sensorRangeReference.setValue(2);
                 sensitiveButton.setBackgroundResource(R.drawable.button_bg);
                 loudButton.setBackgroundResource(R.drawable.button_bg2);
             }
