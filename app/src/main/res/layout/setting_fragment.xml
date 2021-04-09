@@ -6,77 +6,129 @@
     android:layout_height="match_parent"
     android:background="@mipmap/backgound1">
 
+
     <Switch
         android:id="@+id/controlSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="61dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@id/textView"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textView"
+        android:elevation="2dp"/>
 
     <Switch
         android:id="@+id/controlSwitch2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="61dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView3" />
+        app:layout_constraintBottom_toBottomOf="@id/textView3"
+        app:layout_constraintEnd_toEndOf="@id/textView3"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textView3"
+        android:elevation="2dp"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="74dp"
-        android:layout_marginEnd="49dp"
-        android:layout_marginBottom="74dp"
-        android:text="Device Control ON/OFF"
+        android:layout_height="wrap_content"
+        android:text="  Device Control ON/OFF "
+        android:background="@drawable/vie_bg3"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toStartOf="@+id/controlSwitch"
+        app:layout_constraintWidth_percent=".9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@id/loudButton"
+        app:layout_constraintVertical_bias="0.1" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="49dp"
-        android:layout_marginBottom="141dp"
-        android:text="Notifications ON/OFF"
-        android:textColor="#FAF9F9"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/sensitiveButton"
-        app:layout_constraintEnd_toStartOf="@+id/controlSwitch2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/sensitiveButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_bias="0.7"
-        android:text="Sensitive Mode"
+        android:background="@drawable/vie_bg3"
+        android:text="  Notifications ON/OFF "
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintWidth_percent=".9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <TextView
+        android:id="@+id/thresholdTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="  Threshold"
+        android:textColor="@color/white"
+        android:background="@drawable/vie_bg3"
+        android:textSize="20sp"
+        app:layout_constraintWidth_percent=".9"
+        app:layout_constraintVertical_bias=".2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:id="@+id/loudButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/sensitiveButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_bias="0"
-        android:text="Loud Mode"
+        android:background="@drawable/button_bg"
+        app:backgroundTint="@null"
+        android:text="Sensitive Mode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensitiveButton" />
+        app:layout_constraintTop_toBottomOf="@id/thresholdTextView"
+        app:layout_constraintVertical_bias="0.04"
+        app:layout_constraintWidth_percent=".9" />
+
+    <Button
+        android:id="@+id/loudButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_bg"
+        app:backgroundTint="@null"
+        android:text="Loud Mode"
+        app:layout_constraintVertical_bias=".03"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensitiveButton"
+        app:layout_constraintWidth_percent=".9" />
+
+    <ImageView
+        android:id="@+id/questionMark"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/white_question_mark"
+        app:layout_constraintBottom_toBottomOf="@+id/thresholdTextView"
+        app:layout_constraintEnd_toEndOf="@id/thresholdTextView"
+        app:layout_constraintHorizontal_bias=".97"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/thresholdTextView" />
+
+    <TextView
+        android:id="@+id/helpText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/vie_bg2"
+        android:text="\nSelect Sensitive Mode to get notified when your voice is louder than a whisper.\nSelect Loud Mode to get notified when your voice is very loud.\nThe selected mode has the lighter color.\n"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        app:layout_constraintWidth_percent=".7"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.7"
+        android:elevation="2dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
