@@ -69,6 +69,8 @@ public class MainFragment extends Fragment {
     private SimpleDateFormat dateFormat;
     private String date;
     private String minuteCountString;
+    private String hourCountString;
+    private String dayCountString;
 
     private long timerCount;
     private boolean isTimerRunning;
@@ -306,9 +308,56 @@ public class MainFragment extends Fragment {
 
             }
         });
+
+        userCountReference.child("hourCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()) {
+                    userCountReference.child("hourCount").setValue(0);
+                    hourCountTV.setText("0");
+                    spHelper.setHourlyThresholdCount(0);
+                }
+                else {
+                    hourCountString = snapshot.getValue().toString();
+                    //spHelper.setMinuteThresholdCount(Integer.valueOf(minuteCountString));
+                    hourCountTV.setText(hourCountString);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        userCountReference.child("dayCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()) {
+                    userCountReference.child("dayCount").setValue(0);
+                    dayCountTV.setText("0");
+                    spHelper.setDailyThresholdCount(0);
+                }
+                else {
+                    dayCountString = snapshot.getValue().toString();
+                    //spHelper.setMinuteThresholdCount(Integer.valueOf(minuteCountString));
+                    dayCountTV.setText(dayCountString);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void incrementThresholdCounts(){
+
+        //Log.i(TAG,minuteCountString);
+        int minuteCountInt = spHelper.getMinuteThresholdCount();
+        ++minuteCountInt;
+        userCountReference.child("minuteCount").setValue(minuteCountInt);
+        Log.i(TAG,String.valueOf(minuteCountInt));
+        minuteCountTV.setText(String.valueOf(minuteCountInt));
 
         //minute count: get firebase value, increment the value, print the value
         userCountReference.child("minuteCount").addValueEventListener(new ValueEventListener() {
@@ -324,11 +373,43 @@ public class MainFragment extends Fragment {
         });
 
         //Log.i(TAG,minuteCountString);
-        int minuteCountInt = spHelper.getMinuteThresholdCount();
-        ++minuteCountInt;
-        userCountReference.child("minuteCount").setValue(minuteCountInt);
-        Log.i(TAG,String.valueOf(minuteCountInt));
-        minuteCountTV.setText(String.valueOf(minuteCountInt));
+        int hourCountInt = spHelper.getHourlyThresholdCount();
+        ++hourCountInt;
+        userCountReference.child("hourCount").setValue(hourCountInt);
+        Log.i(TAG,String.valueOf(hourCountInt));
+        minuteCountTV.setText(String.valueOf(hourCountInt));
+
+        userCountReference.child("hourCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                hourCountString =  snapshot.getValue().toString();
+                spHelper.setMinuteThresholdCount(Integer.valueOf(hourCountString));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        int dayCountInt = spHelper.getDailyThresholdCount();
+        ++dayCountInt;
+        userCountReference.child("dayCount").setValue(dayCountInt);
+        Log.i(TAG,String.valueOf(dayCountInt));
+        minuteCountTV.setText(String.valueOf(dayCountInt));
+
+        userCountReference.child("dayCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dayCountString =  snapshot.getValue().toString();
+                spHelper.setMinuteThresholdCount(Integer.valueOf(dayCountString));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
