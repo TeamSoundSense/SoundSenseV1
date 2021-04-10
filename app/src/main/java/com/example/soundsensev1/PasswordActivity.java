@@ -14,12 +14,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PasswordActivity extends AppCompatActivity {
 
+    TabLayout tabLayout;
     private EditText emailEditText;
     private Button resetPasswordButton;
+    private Button cancelResetPasswordButton;
     private ProgressBar passwordProgressBar;
 
     FirebaseAuth auth;
@@ -29,17 +32,27 @@ public class PasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password);
 
+        tabLayout = findViewById(R.id.tab_layout);
         emailEditText = findViewById(R.id.editTextEmailPassword);
         resetPasswordButton = findViewById(R.id.resetPasswordButton);
+        cancelResetPasswordButton = findViewById(R.id.cancelResetPasswordButton);
         passwordProgressBar = findViewById(R.id.passwordProgressBar);
 
         auth = FirebaseAuth.getInstance();
+
+        tabLayout.addTab(tabLayout.newTab().setText("Forgot Password"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         resetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetPassword();
             }
+        });
+
+        cancelResetPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){ goToLoginActivity(); }
         });
 
     }

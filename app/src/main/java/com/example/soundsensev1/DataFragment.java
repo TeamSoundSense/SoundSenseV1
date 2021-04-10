@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -40,6 +42,8 @@ public class DataFragment extends Fragment {
     private Button deleteListButton;
     ArrayAdapter<String> adapter;
 
+    private int option = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,7 +51,7 @@ public class DataFragment extends Fragment {
 
         Toolbar toolbar = root.findViewById(R.id.mainToolbar);
         getActivity().setActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Data");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("History");
 
         //shared preferences
         spHelper = new SharedPreferencesHelper(getActivity());

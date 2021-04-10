@@ -22,8 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".PasswordActivity" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity"/>
         <service android:name=".MyService"/>
 

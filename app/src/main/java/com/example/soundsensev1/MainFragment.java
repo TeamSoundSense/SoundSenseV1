@@ -87,7 +87,7 @@ public class MainFragment extends Fragment {
 
         Toolbar toolbar = root.findViewById(R.id.mainToolbar);
         getActivity().setActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("SoundSense");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Home");
 
         welcomeTextView = root.findViewById(R.id.welcomeTextView);
         mainButton = root.findViewById(R.id.mainButton);
