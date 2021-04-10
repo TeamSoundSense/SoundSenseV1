@@ -8,54 +8,50 @@
 
     <ListView
         android:id="@+id/sensorListView"
-        android:layout_width="339dp"
-        android:layout_height="505dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginEnd="38dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/deleteListButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.80" />
+        app:layout_constraintTop_toBottomOf="@id/historyTextView"
+        android:background="@drawable/vie_bg3"
+        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintWidth_percent=".9"
+        app:layout_constraintVertical_bias="0.2"/>
+
+    <TextView
+        android:id="@+id/historyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent=".9"
+        app:layout_constraintVertical_bias=".12"
+        android:textAlignment="center"
+        android:text="Times You Passed the Threshold"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:background="@drawable/vie_bg3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
         android:id="@+id/deleteListButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="143dp"
-        android:layout_marginEnd="143dp"
-        android:layout_marginBottom="47dp"
         android:text="Delete List"
+        android:background="@drawable/edit_text_bg"
+        app:layout_constraintWidth_percent=".9"
+        app:layout_constraintVertical_bias=".5"
+        app:layout_constraintTop_toBottomOf="@id/sensorListView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/question_mark"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@drawable/white_question_mark"
-        app:layout_constraintBottom_toBottomOf="@+id/deleteListButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toEndOf="@+id/deleteListButton"
-        app:layout_constraintTop_toTopOf="@+id/deleteListButton" />
 
-    <TextView
-        android:id="@+id/help_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/vie_bg2"
-        android:text="\n   History page gives you a\n   list of all the times you\n   have passed the threshold. \n"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/question_mark"
-        app:layout_constraintEnd_toEndOf="@+id/question_mark"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintVertical_bias="0.95"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
