@@ -94,7 +94,6 @@ public class MainFragment extends Fragment {
         dayCountTV = root.findViewById(R.id.dayCountTV);
         spHelper = new SharedPreferencesHelper(getActivity());
 
-
         //firebase authentication
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -120,7 +119,11 @@ public class MainFragment extends Fragment {
         storeUserSensorValues();
         setButtonValue();
         setThresholdCounts();
-        resetThresholdCounts();
+
+        Intent intent = new Intent();
+        String minuteTV = intent.getStringExtra("minuteTV");
+        minuteCountTV.setText(minuteTV);
+
 
         //get user info from firebase
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -328,30 +331,45 @@ public class MainFragment extends Fragment {
 
     private void resetThresholdCounts() {
 
+        //minute timers
+
         int milisInAMinute = 60000;
         long time = System.currentTimeMillis();
         timerCount = milisInAMinute - (time % milisInAMinute);
-        Log.i("countseconds","Initial timer count: " +String.valueOf(timerCount));
+        Log.i("countseconds", "Initial timer count: " + String.valueOf(timerCount));
 
-        countTest = 1;
+        CountDownTimer timer2 = new CountDownTimer(60000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
 
-             timer1 = new CountDownTimer(60000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    isTimerRunning = true;
-                }
+            }
 
-                public void onFinish() {
+            @Override
+            public void onFinish() {
+                userCountReference.child("minuteCount").setValue(0);
+                spHelper.setMinuteThresholdCount(0);
+                minuteCountTV.setText("0");
+                Log.i("countseconds", "Minute count reset: 60000");
+                this.start();
+            }
+        };
 
-                    userCountReference.child("minuteCount").setValue(0);
-                    spHelper.setMinuteThresholdCount(0);
-                    minuteCountTV.setText("0");
-                    //isTimerRunning = false;
-                    //timerCount=60000;
-                    Log.i("countseconds", "Minute count reset: "+String.valueOf(timerCount));
-                    timer1.start();
-                }
-            }.start();
+        timer1 = new CountDownTimer(timerCount, 1000) {
+            public void onTick(long millisUntilFinished) {
 
+            }
+
+            public void onFinish() {
+
+                userCountReference.child("minuteCount").setValue(0);
+                spHelper.setMinuteThresholdCount(0);
+                minuteCountTV.setText("0");
+                Log.i("countseconds", "Minute count reset: ");
+                timer2.start();
+            }
+        }.start();
+
+    }
              /*
         if(isTimerRunning==false) {
             timer1.start();
@@ -434,7 +452,7 @@ public class MainFragment extends Fragment {
         timer3.schedule(dailyTask,01,1000*60*60*24);
 
          */
-    }
+
 
     /*
     public boolean onCreateOptionsMenu(Menu menu) {
