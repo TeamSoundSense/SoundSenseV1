@@ -3,6 +3,7 @@ package com.example.soundsensev1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,11 +33,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainFragment extends Fragment {
 
     private TextView welcomeTextView;
     private Button mainButton;
+    private TextView minuteCountTV;
+    private TextView hourCountTV;
+    private TextView dayCountTV;
+
+
 
     private static FirebaseUser user;
     private static String userID;
@@ -46,6 +58,8 @@ public class MainFragment extends Fragment {
     private static DatabaseReference userReference;
     private static DatabaseReference inputSensorReference;
     private static DatabaseReference analogReference;
+    private static DatabaseReference userCountReference;
+
     private SharedPreferencesHelper spHelper;
 
     private boolean buttonOn;
@@ -54,6 +68,13 @@ public class MainFragment extends Fragment {
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String date;
+    private String minuteCountString;
+
+    private long timerCount;
+    private boolean isTimerRunning;
+    private CountDownTimer timer1;
+    int countTest;
+
 
     private static final String TAG = "MainActivity";
 
@@ -68,6 +89,9 @@ public class MainFragment extends Fragment {
 
         welcomeTextView = root.findViewById(R.id.welcomeTextView);
         mainButton = root.findViewById(R.id.mainButton);
+        minuteCountTV = root.findViewById(R.id.minuteCountTV);
+        hourCountTV = root.findViewById(R.id.hourCountTV);
+        dayCountTV = root.findViewById(R.id.dayCountTV);
         spHelper = new SharedPreferencesHelper(getActivity());
 
 
@@ -82,6 +106,9 @@ public class MainFragment extends Fragment {
         inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
         analogReference = FirebaseDatabase.getInstance().getReference().child("Sensor").child("Analog");
 
+        userCountReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("thresholdCounts");
+
         //button settings
         userReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sensorValues");
@@ -92,6 +119,8 @@ public class MainFragment extends Fragment {
 
         storeUserSensorValues();
         setButtonValue();
+        setThresholdCounts();
+        resetThresholdCounts();
 
         //get user info from firebase
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -229,6 +258,13 @@ public class MainFragment extends Fragment {
                     spHelper.setRecentSensorValue(value);
                     Log.i("MainActivity", "recent value: " + spHelper.getRecentSensorValue());
 
+                    incrementThresholdCounts();
+
+                    userCountReference.child("hourCount").setValue(5);
+                    userCountReference.child("dailyCount").setValue(6);
+
+
+
                     //start service to send notification
                     if(spHelper.getNotification()){
                         startService();
@@ -242,6 +278,162 @@ public class MainFragment extends Fragment {
             }
         });
 
+    }
+
+    private void setThresholdCounts(){
+        userCountReference.child("minuteCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()) {
+                    userCountReference.child("minuteCount").setValue(0);
+                    minuteCountTV.setText("0");
+                    spHelper.setMinuteThresholdCount(0);
+                }
+                else {
+                    minuteCountString = snapshot.getValue().toString();
+                    //spHelper.setMinuteThresholdCount(Integer.valueOf(minuteCountString));
+                    minuteCountTV.setText(minuteCountString);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void incrementThresholdCounts(){
+
+        //minute count: get firebase value, increment the value, print the value
+        userCountReference.child("minuteCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                minuteCountString =  snapshot.getValue().toString();
+                spHelper.setMinuteThresholdCount(Integer.valueOf(minuteCountString));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //Log.i(TAG,minuteCountString);
+        int minuteCountInt = spHelper.getMinuteThresholdCount();
+        ++minuteCountInt;
+        userCountReference.child("minuteCount").setValue(minuteCountInt);
+        Log.i(TAG,String.valueOf(minuteCountInt));
+        minuteCountTV.setText(String.valueOf(minuteCountInt));
+
+    }
+
+    private void resetThresholdCounts() {
+
+        int milisInAMinute = 60000;
+        long time = System.currentTimeMillis();
+        timerCount = milisInAMinute - (time % milisInAMinute);
+        Log.i("countseconds","Initial timer count: " +String.valueOf(timerCount));
+
+        countTest = 1;
+
+             timer1 = new CountDownTimer(60000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    isTimerRunning = true;
+                }
+
+                public void onFinish() {
+
+                    userCountReference.child("minuteCount").setValue(0);
+                    spHelper.setMinuteThresholdCount(0);
+                    minuteCountTV.setText("0");
+                    //isTimerRunning = false;
+                    //timerCount=60000;
+                    Log.i("countseconds", "Minute count reset: "+String.valueOf(timerCount));
+                    timer1.start();
+                }
+            }.start();
+
+             /*
+        if(isTimerRunning==false) {
+            timer1.start();
+            timerCount=60000;
+            Log.i("countseconds","reset timer count: "+ String.valueOf(timerCount));
+
+
+        }
+
+
+
+
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                userCountReference.child("minuteCount").setValue(0);
+                minuteCountTV.setText(0);
+                Log.i(TAG,"Minute count reset");
+            }
+        };
+        executorService.schedule(r,0, TimeUnit.MINUTES);
+        executorService.shutdown();
+
+        int milisInAMinute = 60000;
+        long time = System.currentTimeMillis();
+
+        Runnable update = new Runnable() {
+            public void run() {
+                // Do whatever you want to do when the minute changes
+                userCountReference.child("minuteCount").setValue(0);
+                minuteCountTV.setText(0);
+                Log.i(TAG,"Minute count updated");
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                update.run();
+            }
+        }, time % milisInAMinute, milisInAMinute);
+
+// This will update for the current minute, it will be updated again in at most one minute.
+        update.run();
+
+        Timer timer2 = new Timer();
+        TimerTask hourlyTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        spHelper.setHourlyThresholdCount(0);
+                        Log.i(TAG,"Hourly count updated");
+                        hourlyThresholdTextView.setText(String.valueOf(spHelper.getHourlyThresholdCount()));
+                    }
+                });
+            }
+        };
+
+        timer2.schedule(hourlyTask,01,1000*60*60);
+
+        Timer timer3 = new Timer();
+        TimerTask dailyTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        spHelper.setDailyThresholdCount(0);
+                        Log.i(TAG,"Daily count updated");
+                        dailyThresholdTextView.setText(String.valueOf(spHelper.getDailyThresholdCount()));
+                    }
+                });
+            }
+        };
+
+        timer3.schedule(dailyTask,01,1000*60*60*24);
+
+         */
     }
 
     /*

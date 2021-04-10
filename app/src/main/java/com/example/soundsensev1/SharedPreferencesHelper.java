@@ -41,6 +41,56 @@ public class SharedPreferencesHelper {
         return sharedPreferences.getBoolean("notif_control",true);
     }
 
+    public void setHourlyThresholdCount(int value){
+        SharedPreferences.Editor edt = sharedPreferences.edit();
+        edt.putInt("hourly_threshold_count", value);
+        edt.commit();
+    }
+
+    public void incrementHourlyThresholdCount(){
+        int hourlyCount = sharedPreferences.getInt("hourly_threshold_count",0);
+        SharedPreferences.Editor edt = sharedPreferences.edit();
+        edt.putInt("hourly_threshold_count", ++hourlyCount);
+        edt.commit();
+    }
+
+    public int getHourlyThresholdCount(){
+        return sharedPreferences.getInt("hourly_threshold_count",0);
+    }
+
+    public void setDailyThresholdCount(int value){
+        SharedPreferences.Editor edt = sharedPreferences.edit();
+        edt.putInt("daily_threshold_count", value);
+        edt.commit();
+    }
+
+    public void incrementDailyThresholdCount(){
+        int dailyCount = sharedPreferences.getInt("daily_threshold_count",0);
+        SharedPreferences.Editor edt = sharedPreferences.edit();
+        edt.putInt("daily_threshold_count", ++dailyCount);
+        edt.commit();
+    }
+
+    public int getDailyThresholdCount(){
+        return sharedPreferences.getInt("daily_threshold_count",0);
+    }
+
+    public void setMinuteThresholdCount(int value){
+        SharedPreferences.Editor edt = sharedPreferences.edit();
+        edt.putInt("minute_threshold_count", value);
+        edt.commit();
+    }
+
+    public void incrementMinuteThresholdCount(){
+        int minuteCount = sharedPreferences.getInt("minuteThresholdCount",0);
+        SharedPreferences.Editor edt = sharedPreferences.edit();
+        edt.putInt("minute_threshold_count",++minuteCount);
+        edt.commit();
+    }
+
+    public int getMinuteThresholdCount(){
+        return sharedPreferences.getInt("minute_threshold_count",0);
+    }
 
 
 
