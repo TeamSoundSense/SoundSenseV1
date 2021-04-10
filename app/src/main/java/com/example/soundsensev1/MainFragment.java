@@ -268,8 +268,8 @@ public class MainFragment extends Fragment {
 
                     incrementThresholdCounts();
 
-                    userCountReference.child("hourCount").setValue(5);
-                    userCountReference.child("dailyCount").setValue(6);
+                    //userCountReference.child("hourCount").setValue(5);
+                    //userCountReference.child("dailyCount").setValue(6);
 
 
 
