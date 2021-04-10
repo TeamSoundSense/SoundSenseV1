@@ -223,9 +223,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
         //minute timers
 
-        int milisInAMinute = 60000;
+        int millisInAMinute = 60000;
         long time = System.currentTimeMillis();
-        long timerCount = milisInAMinute - (time % milisInAMinute);
+        long timerCount = millisInAMinute - (time % millisInAMinute);
         Log.i("countseconds", "Initial timer count: " + String.valueOf(timerCount));
         Intent intent = new Intent();
         CountDownTimer timer2 = new CountDownTimer(60000,1000) {
@@ -256,11 +256,89 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 spHelper.setMinuteThresholdCount(0);
                 //minuteCountTV.setText("0");
                 intent.putExtra("minuteTV","0");
-                Log.i("countseconds", "Minute count reset: ");
+                Log.i("countseconds", "Hour count reset: ");
                 timer2.start();
             }
         }.start();
 
+        //hour timers
+
+        int millisInAnHour = 3600000;
+        long timerCount2 = millisInAnHour - (time % millisInAnHour);
+
+        CountDownTimer timer4 = new CountDownTimer(3600000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("hourCount").setValue(0);
+                spHelper.setHourlyThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("hourTV","0");
+                Log.i("countseconds", "Hour count reset: ");
+                this.start();
+            }
+        }.start();
+
+        CountDownTimer timer3 = new CountDownTimer(timerCount2, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("hourCount").setValue(0);
+                spHelper.setHourlyThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("hourTV","0");
+                Log.i("countseconds", "Hour count reset: ");
+                timer4.start();
+
+            }
+        }.start();
+
+        //Day timers
+
+        int millisInADay = 86400000;
+        long timerCount3 = millisInADay - (time % millisInADay);
+
+        CountDownTimer timer6 = new CountDownTimer(3600000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("dayCount").setValue(0);
+                spHelper.setDailyThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("dayTV","0");
+                Log.i("countseconds", "Day count reset: ");
+                this.start();
+            }
+        }.start();
+
+        CountDownTimer timer5 = new CountDownTimer(timerCount3, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("dayCount").setValue(0);
+                spHelper.setDailyThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("dayTV","0");
+                Log.i("countseconds", "Day count reset: ");
+                timer6.start();
+            }
+        }.start();
     }
     /*
 

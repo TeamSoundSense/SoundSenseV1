@@ -123,7 +123,10 @@ public class MainFragment extends Fragment {
         Intent intent = new Intent();
         String minuteTV = intent.getStringExtra("minuteTV");
         minuteCountTV.setText(minuteTV);
-
+        String hourTV = intent.getStringExtra("hourTV");
+        hourCountTV.setText(hourTV);
+        String dayTV = intent.getStringExtra("dayTV");
+        dayCountTV.setText(dayTV);
 
         //get user info from firebase
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -368,6 +371,7 @@ public class MainFragment extends Fragment {
                 timer2.start();
             }
         }.start();
+
 
     }
              /*
