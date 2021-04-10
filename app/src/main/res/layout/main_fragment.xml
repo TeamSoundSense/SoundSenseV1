@@ -37,4 +37,103 @@
         app:layout_constraintTop_toBottomOf="@+id/welcomeTextView"
         app:layout_constraintVertical_bias="0.223" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="222dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="83dp"
+        android:layout_marginBottom="39dp"
+        android:text="Amount detected in past"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainButton" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="99dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="26dp"
+        android:text="Minute"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintEnd_toStartOf="@+id/minuteCountTV"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="99dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="52dp"
+        android:text="Day"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dayCountTV"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="99dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="26dp"
+        android:text="Hour"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView8"
+        app:layout_constraintEnd_toStartOf="@+id/hourCountTV"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/minuteCountTV"
+        android:layout_width="99dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="26dp"
+        android:text="Count1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/hourCountTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/hourCountTV"
+        android:layout_width="99dp"
+        android:layout_height="27dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="26dp"
+        android:text="Count2"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/dayCountTV"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/dayCountTV"
+        android:layout_width="99dp"
+        android:layout_height="27dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="56dp"
+        android:text="Count3"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

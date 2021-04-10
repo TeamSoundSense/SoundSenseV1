@@ -85,11 +85,15 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     private SlidingRootNav slidingRootNav;
 
+    private static DatabaseReference userCountReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userCountReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("thresholdCounts");
 
         spHelper = new SharedPreferencesHelper(this);
 
@@ -97,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         Toolbar toolbar = findViewById(R.id.mainToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("SoundSense");
+
+        resetThresholdCounts();
 
         slidingRootNav = new SlidingRootNavBuilder(this)
                 .withDragDistance(180)
@@ -134,54 +140,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_baseline_menu_24);
         toolbar.setOverflowIcon(drawable);
 
-        /*
-
-        welcomeTextView = findViewById(R.id.welcomeTextView);
-        mainButton = findViewById(R.id.mainButton);
-        spHelper = new SharedPreferencesHelper(this);
-
-
-        //firebase authentication
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        if(user!=null) {
-            userID = user.getUid();
-        }
-
-        //reference to firebase to retrieve input sensor data
-        inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
-        analogReference = FirebaseDatabase.getInstance().getReference().child("Sensor").child("Analog");
-
-        //button settings
-        userReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sensorValues");
-        sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
-
-        //controls for the button
-        analogReference.setValue(0);
-
-        storeUserSensorValues();
-        setButtonValue();
-
-        //get user info from firebase
-        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
-
-                if(userProfile != null){
-                    String name = userProfile.name;
-                    welcomeTextView.setText("Welcome, "+ name +"!");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(MainActivity.this,"User info error!",Toast.LENGTH_LONG).show();
-            }
-        });
-
-         */
     }
 
     private DrawerItem createItemFor(int position){
@@ -259,6 +217,128 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     protected void goToLoginActivity(){
         Intent intent = new Intent (this,LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void resetThresholdCounts() {
+
+        //minute timers
+
+        int millisInAMinute = 60000;
+        long time = System.currentTimeMillis();
+        long timerCount = millisInAMinute - (time % millisInAMinute);
+        Log.i("countseconds", "Initial timer count: " + String.valueOf(timerCount));
+        Intent intent = new Intent();
+        CountDownTimer timer2 = new CountDownTimer(60000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("minuteCount").setValue(0);
+                spHelper.setMinuteThresholdCount(0);
+                intent.putExtra("minuteTV","0");
+                //minuteCountTV.setText("0");
+                Log.i("countseconds", "Minute count reset: 60000");
+                this.start();
+            }
+        };
+
+        CountDownTimer timer1 = new CountDownTimer(timerCount, 1000) {
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+
+                userCountReference.child("minuteCount").setValue(0);
+                spHelper.setMinuteThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("minuteTV","0");
+                Log.i("countseconds", "Hour count reset: ");
+                timer2.start();
+            }
+        }.start();
+
+        //hour timers
+
+        int millisInAnHour = 3600000;
+        long timerCount2 = millisInAnHour - (time % millisInAnHour);
+
+        CountDownTimer timer4 = new CountDownTimer(3600000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("hourCount").setValue(0);
+                spHelper.setHourlyThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("hourTV","0");
+                Log.i("countseconds", "Hour count reset: ");
+                this.start();
+            }
+        }.start();
+
+        CountDownTimer timer3 = new CountDownTimer(timerCount2, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("hourCount").setValue(0);
+                spHelper.setHourlyThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("hourTV","0");
+                Log.i("countseconds", "Hour count reset: ");
+                timer4.start();
+
+            }
+        }.start();
+
+        //Day timers
+
+        int millisInADay = 86400000;
+        long timerCount3 = millisInADay - (time % millisInADay);
+
+        CountDownTimer timer6 = new CountDownTimer(3600000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("dayCount").setValue(0);
+                spHelper.setDailyThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("dayTV","0");
+                Log.i("countseconds", "Day count reset: ");
+                this.start();
+            }
+        }.start();
+
+        CountDownTimer timer5 = new CountDownTimer(timerCount3, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                userCountReference.child("dayCount").setValue(0);
+                spHelper.setDailyThresholdCount(0);
+                //minuteCountTV.setText("0");
+                intent.putExtra("dayTV","0");
+                Log.i("countseconds", "Day count reset: ");
+                timer6.start();
+            }
+        }.start();
     }
     /*
 
