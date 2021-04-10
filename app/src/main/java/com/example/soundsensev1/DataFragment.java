@@ -32,8 +32,6 @@ import java.util.ArrayList;
 
 public class DataFragment extends Fragment {
 
-    protected TextView helpText;
-    protected ImageView questionMark;
     protected ListView sensorListView;
     private DatabaseReference inputSensorReference;
     private DatabaseReference userReference;
@@ -53,7 +51,7 @@ public class DataFragment extends Fragment {
 
         Toolbar toolbar = root.findViewById(R.id.mainToolbar);
         getActivity().setActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Analysis");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("History");
 
         //shared preferences
         spHelper = new SharedPreferencesHelper(getActivity());
@@ -70,26 +68,6 @@ public class DataFragment extends Fragment {
         inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
 
         printUserSensorValues();
-
-        helpText = root.findViewById(R.id.help_text);
-
-        questionMark = root.findViewById(R.id.question_mark);
-        questionMark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                //DataHelpDialogFragment dataHelpDialogFragment = new DataHelpDialogFragment();
-                //dataHelpDialogFragment.show(getFragmentManager(), "DataHelpDialogFragment");
-
-                if(option == 0){
-                    helpText.setVisibility(View.VISIBLE);
-                    option = 1;
-                }
-                else if (option == 1){
-                    helpText.setVisibility(View.GONE);
-                    option = 0;
-                }
-            }
-        });
 
         deleteListButton = root.findViewById(R.id.deleteListButton);
         deleteListButton.setOnClickListener(new View.OnClickListener() {
