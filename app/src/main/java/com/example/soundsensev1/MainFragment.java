@@ -289,6 +289,8 @@ public class MainFragment extends Fragment {
     }
 
     private void setThresholdCounts(){
+
+        //minutesCount************
         userCountReference.child("minuteCount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -299,7 +301,7 @@ public class MainFragment extends Fragment {
                 }
                 else {
                     minuteCountString = snapshot.getValue().toString();
-                    //spHelper.setMinuteThresholdCount(Integer.valueOf(minuteCountString));
+                    spHelper.setMinuteThresholdCount(Integer.valueOf(minuteCountString));
                     minuteCountTV.setText(minuteCountString);
                 }
             }
@@ -308,6 +310,8 @@ public class MainFragment extends Fragment {
 
             }
         });
+
+        //hourCount************
 
         userCountReference.child("hourCount").addValueEventListener(new ValueEventListener() {
             @Override
@@ -319,7 +323,7 @@ public class MainFragment extends Fragment {
                 }
                 else {
                     hourCountString = snapshot.getValue().toString();
-                    //spHelper.setMinuteThresholdCount(Integer.valueOf(minuteCountString));
+                    spHelper.setHourlyThresholdCount(Integer.valueOf(hourCountString));
                     hourCountTV.setText(hourCountString);
                 }
             }
@@ -329,6 +333,7 @@ public class MainFragment extends Fragment {
             }
         });
 
+        //dayCount************
         userCountReference.child("dayCount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -339,7 +344,7 @@ public class MainFragment extends Fragment {
                 }
                 else {
                     dayCountString = snapshot.getValue().toString();
-                    //spHelper.setMinuteThresholdCount(Integer.valueOf(minuteCountString));
+                    spHelper.setDailyThresholdCount(Integer.valueOf(dayCountString));
                     dayCountTV.setText(dayCountString);
                 }
             }
@@ -383,7 +388,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 hourCountString =  snapshot.getValue().toString();
-                spHelper.setMinuteThresholdCount(Integer.valueOf(hourCountString));
+                spHelper.setHourlyThresholdCount(Integer.valueOf(hourCountString));
             }
 
             @Override
@@ -402,7 +407,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dayCountString =  snapshot.getValue().toString();
-                spHelper.setMinuteThresholdCount(Integer.valueOf(dayCountString));
+                spHelper.setDailyThresholdCount(Integer.valueOf(dayCountString));
             }
 
             @Override

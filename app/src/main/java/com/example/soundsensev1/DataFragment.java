@@ -47,7 +47,7 @@ public class DataFragment extends Fragment {
 
         Toolbar toolbar = root.findViewById(R.id.mainToolbar);
         getActivity().setActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Analysis");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Data");
 
         //shared preferences
         spHelper = new SharedPreferencesHelper(getActivity());
