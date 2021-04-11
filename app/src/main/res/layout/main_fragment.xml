@@ -35,7 +35,6 @@
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:clickable="false"
         app:backgroundTint="@null"
         app:layout_constraintHorizontal_bias=".5"
         app:layout_constraintBottom_toBottomOf="parent"
