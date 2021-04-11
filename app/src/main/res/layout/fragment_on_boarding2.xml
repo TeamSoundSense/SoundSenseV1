@@ -86,7 +86,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="When you are in a quiet space, you can turn on this mode to make sure your voice isn't louder than a whisper. This mode would be perfect if you are in the same room as a sleeping baby, in a library, or in a library with a sleeping baby."
+        android:text="When you are in a quiet space, you can turn on this mode to make sure your voice isn't louder than a whisper. This mode would be perfect if you are in the same room as a sleeping baby or near someone in a meeting."
         android:justificationMode="inter_word"
         android:textColor="@color/white"
         android:textSize="16sp"
