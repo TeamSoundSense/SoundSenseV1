@@ -20,8 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,13 +40,12 @@ public class ProfileFragment extends Fragment {
     private EditText editEmail;
     private Button saveButton;
 
-    private FirebaseUser user;
-    private DatabaseReference reference;
-    private String userID;
+    private static FirebaseUser user;
+    private static DatabaseReference reference;
+    private static DatabaseReference userReference;
+    private static String userID;
 
     private SharedPreferencesHelper spHelper;
-
-    private DatabaseReference userReference;
 
     @Nullable
     @Override
@@ -71,6 +75,7 @@ public class ProfileFragment extends Fragment {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
+        userReference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         userID = user.getUid();
 
         //get user info from firebase
@@ -101,6 +106,37 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
+    protected void deleteUser(){
+        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            spHelper.setUserLogIn(false);
+                            goToLoginActivity();
+                            Toast.makeText(getContext(), "User Deleted.", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            try {
+                                FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                                Toast.makeText(getContext(), "Failed to delete.", Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                Toast.makeText(getContext(), "Connection Failure! "+e, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Failed to delete user.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //MenuInflater inflater = getActivity().getMenuInflater();
@@ -115,8 +151,8 @@ public class ProfileFragment extends Fragment {
                 enterEditMode();
                 return true;
 
-            case R.id.logoutItem:
-                logoutUser();
+            case R.id.deleteItem:
+                deleteUser();
                 return true;
 
             default:
@@ -135,9 +171,6 @@ public class ProfileFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userReference = FirebaseDatabase.getInstance().getReference("Users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
                 userReference.child("name").setValue(editName.getText().toString());
                 userReference.child("email").setValue(editEmail.getText().toString());
 
@@ -159,6 +192,7 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
 
     protected void exitEditMode(){
         //when we exit editMode, we return to displayMode

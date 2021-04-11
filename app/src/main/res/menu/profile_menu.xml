@@ -11,8 +11,8 @@
             android:title="Edit Profile"
             app:showAsAction="never"/>
             <item
-                android:id="@+id/logoutItem"
-                android:title="Logout" />
+                android:id="@+id/deleteItem"
+                android:title="Delete Account" />
         </menu>
     </item>
 </menu>
