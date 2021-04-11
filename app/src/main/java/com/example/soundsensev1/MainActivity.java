@@ -19,6 +19,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
@@ -43,6 +44,7 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener{
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final String TAG = "MainActivity";
      */
 
+    private Calendar calendar;
     private SharedPreferencesHelper spHelper;
 
     private static final int POS_CLOSE = 0;
@@ -219,10 +222,49 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         startActivity(intent);
     }
 
-    private void resetThresholdCounts() {
+    public void resetThresholdCounts(){
+        calendar = Calendar.getInstance();
+        int checkSecond = calendar.get(Calendar.SECOND);
+        int checkHour = calendar.get(Calendar.MINUTE);
+        int checkDay = calendar.get(Calendar.HOUR_OF_DAY);
+        Intent intent = new Intent();
+        if(checkSecond == 0){
+            userCountReference.child("minuteCount").setValue(0);
+            spHelper.setMinuteThresholdCount(0);
+            intent.putExtra("minuteTV","0");
+        }
 
+        if(checkHour == 0){
+            userCountReference.child("hourCount").setValue(0);
+            spHelper.setHourlyThresholdCount(0);
+            intent.putExtra("hourTV","0");
+        }
+
+        if(checkDay == 0){
+            userCountReference.child("dayCount").setValue(0);
+            spHelper.setDailyThresholdCount(0);
+            intent.putExtra("dayTV","0");
+        }
+
+        refreshThresholdCounts(1000);
+    }
+
+    private void refreshThresholdCounts(int milliseconds) {
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                resetThresholdCounts();
+            }
+        };
+
+        handler.postDelayed(runnable, milliseconds);
+
+
+
+        /*
         //minute timers
-
         int millisInAMinute = 60000;
         long time = System.currentTimeMillis();
         long timerCount = millisInAMinute - (time % millisInAMinute);
@@ -339,6 +381,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 timer6.start();
             }
         }.start();
+
+         */
     }
     /*
 
