@@ -18,6 +18,7 @@
     <color name="blue_background1">#152643</color>
     <color name="light_blue_background1">#609eb4</color>
     <color name="light_blue_background2">#56BBDF</color>
+    <color name="transparent_light_blue_background1">#B3609EB4</color>
     <color name="dark_green_background1">#05282c</color>
     <color name="dark_red">#8d3330</color>
     <color name="dusty_darker_blue">#044C65</color>
