@@ -86,7 +86,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Whether you are in an environment that requires silence or you are trying not to be too loud, this app will help you control your voice by tracking when you go over your selected threshold. "
+        android:text="Whether you are in an environment that requires silence or you are trying not to be too loud, this app will help you be aware of your volume level by tracking when you go over your selected mode and sending you phone and LED notifications. "
         android:justificationMode="inter_word"
         android:textColor="@color/white"
         android:textSize="16sp"
