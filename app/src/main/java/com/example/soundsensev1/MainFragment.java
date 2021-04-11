@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -42,13 +43,12 @@ import java.util.concurrent.TimeUnit;
 
 public class MainFragment extends Fragment {
 
-    private TextView welcomeTextView;
+    private TextView thresholdView;
     private Button mainButton;
     private TextView minuteCountTV;
     private TextView hourCountTV;
     private TextView dayCountTV;
-
-
+    private Switch onOffSwitch;
 
     private static FirebaseUser user;
     private static String userID;
@@ -59,11 +59,11 @@ public class MainFragment extends Fragment {
     private static DatabaseReference inputSensorReference;
     private static DatabaseReference analogReference;
     private static DatabaseReference userCountReference;
+    private static DatabaseReference sensorRangeReference;
 
     private SharedPreferencesHelper spHelper;
 
     private boolean buttonOn;
-
 
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
@@ -76,7 +76,7 @@ public class MainFragment extends Fragment {
     private boolean isTimerRunning;
     private CountDownTimer timer1;
     int countTest;
-
+    private String mode;
 
     private static final String TAG = "MainActivity";
 
@@ -89,9 +89,12 @@ public class MainFragment extends Fragment {
         getActivity().setActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Home");
 
-        welcomeTextView = root.findViewById(R.id.welcomeTextView);
+
+        thresholdView = root.findViewById(R.id.thresholdView);
         mainButton = root.findViewById(R.id.mainButton);
         minuteCountTV = root.findViewById(R.id.minuteCountTV);
+        onOffSwitch = root.findViewById(R.id.onOffSwitch);
+
         hourCountTV = root.findViewById(R.id.hourCountTV);
         dayCountTV = root.findViewById(R.id.dayCountTV);
         spHelper = new SharedPreferencesHelper(getActivity());
@@ -115,9 +118,12 @@ public class MainFragment extends Fragment {
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sensorValues");
         sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
 
+        sensorRangeReference = FirebaseDatabase.getInstance().getReference().child("Range").child("Number");
+
         //controls for the button
         analogReference.setValue(0);
 
+        setControlSwitchValue();
         storeUserSensorValues();
         setButtonValue();
         setThresholdCounts();
@@ -138,13 +144,35 @@ public class MainFragment extends Fragment {
 
                 if(userProfile != null){
                     String name = userProfile.name;
-                    welcomeTextView.setText("Welcome, "+ name +"!");
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Hello "+name+"!");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getActivity(),"User info error!",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        sensorRangeReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (Integer.parseInt(snapshot.getValue().toString())==1){
+                    thresholdView.setText("Selected Mode: Sensitive");
+                    mode = "Sensitive";
+                }
+                else if (Integer.parseInt(snapshot.getValue().toString())==2){
+                    thresholdView.setText("Selected Mode: Loud");
+                    mode = "Loud";
+                }
+                else{
+                    sensorRangeReference.setValue(1);
+                    thresholdView.setText("Selected Mode: Sensitive");
+                    mode = "Sensitive";
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -172,7 +200,7 @@ public class MainFragment extends Fragment {
                     buttonON();
                 }
 
-                //user can turn on or off using the button depending on the firebase value
+                /*//user can turn on or off using the button depending on the firebase value
                 mainButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -185,12 +213,50 @@ public class MainFragment extends Fragment {
                             buttonON();
                         }
                     }
-                });
+                });*/
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getActivity(), "Button error!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    protected void setControlSwitchValue(){
+        sensorControlReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //read the current firebase value of device and convert it to int
+                String controlString = snapshot.getValue().toString();
+                int controlInt = Integer.parseInt(controlString);
+                Log.i("Settings","control switch: "+controlInt);
+                //set the switch to whatever the current firebase value is
+                if(controlInt==0){
+                    onOffSwitch.setChecked(false);
+                }else{
+                    onOffSwitch.setChecked(true);
+                }
+
+                //when user activates control switch, set firebase value to 1 which will allow sensor to send values
+                //otherwise it will be turned off and it wont send values
+
+                onOffSwitch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(onOffSwitch.isChecked()){
+                            sensorControlReference.setValue(1);
+                        }
+                        else{
+                            sensorControlReference.setValue(0);
+                        }
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "Control Switch error!", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -208,7 +274,7 @@ public class MainFragment extends Fragment {
                 new CountDownTimer(2000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         if (currentSensorValue!=0){
-                            mainButton.setText("Too loud!\n"+currentSensorValue);
+                            mainButton.setText("Too loud!");
                             mainButton.setBackgroundResource(R.drawable.circular_button_red);
                         }
                     }
@@ -227,7 +293,8 @@ public class MainFragment extends Fragment {
     }
 
     protected void buttonOFF(){
-        mainButton.setText("Tap to\nturn\nON");
+        analogReference.setValue(0);
+        mainButton.setText("Device\nOFF");
         mainButton.setBackgroundResource(R.drawable.circular_button);
         buttonOn = false;
     }
@@ -249,7 +316,7 @@ public class MainFragment extends Fragment {
                 calendar = Calendar.getInstance();
                 dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
                 date = dateFormat.format(calendar.getTime());
-                String dateString = "    \nTime: "+ date;
+                String dateString = "    \nDate/Time: "+ date;
 
                 String value = Objects.requireNonNull(snapshot.getValue()).toString();
 
@@ -260,7 +327,7 @@ public class MainFragment extends Fragment {
 
                 //if sensor value isnt the same as recent value, upload the value to the firebase database
                 if (!spHelper.getRecentSensorValue().equals(value) && Integer.parseInt(value)!=0) {
-                    userReference.push().setValue("Volume Level: "+value+dateString);
+                    userReference.push().setValue("Selected Mode: "+mode+dateString);
 
                     //store recent sensor value in shared prefs
                     spHelper.setRecentSensorValue(value);
