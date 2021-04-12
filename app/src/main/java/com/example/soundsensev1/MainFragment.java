@@ -48,7 +48,7 @@ public class MainFragment extends Fragment {
     private TextView minuteCountTV;
     private TextView hourCountTV;
     private TextView dayCountTV;
-    private Switch onOffSwitch;
+    //private Switch onOffSwitch;
 
     private static FirebaseUser user;
     private static String userID;
@@ -93,7 +93,7 @@ public class MainFragment extends Fragment {
         thresholdView = root.findViewById(R.id.thresholdView);
         mainButton = root.findViewById(R.id.mainButton);
         minuteCountTV = root.findViewById(R.id.minuteCountTV);
-        onOffSwitch = root.findViewById(R.id.onOffSwitch);
+        //onOffSwitch = root.findViewById(R.id.onOffSwitch);
 
         hourCountTV = root.findViewById(R.id.hourCountTV);
         dayCountTV = root.findViewById(R.id.dayCountTV);
@@ -123,7 +123,7 @@ public class MainFragment extends Fragment {
         //controls for the button
         analogReference.setValue(0);
 
-        setControlSwitchValue();
+        //setControlSwitchValue();
         storeUserSensorValues();
         setButtonValue();
         setThresholdCounts();
@@ -144,7 +144,9 @@ public class MainFragment extends Fragment {
 
                 if(userProfile != null){
                     String name = userProfile.name;
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Hello "+name+"!");
+                    if (name!="" || name!=null){
+                        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Hello, "+name+"!");
+                    }
                 }
             }
             @Override
@@ -172,7 +174,33 @@ public class MainFragment extends Fragment {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
+        /*onOffSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onOffSwitch.isChecked()){
+                    sensorControlReference.setValue(1);
+                }
+                else{
+                    sensorControlReference.setValue(0);
+                }
+            }
+        });*/
+
+        //user can turn on or off using the button depending on the firebase value
+        mainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(buttonOn){
+                    sensorControlReference.setValue(0);
+                    buttonOFF();
+                }
+                else{
+                    sensorControlReference.setValue(1);
+                    buttonON();
+                }
             }
         });
 
@@ -190,14 +218,17 @@ public class MainFragment extends Fragment {
                 //read the current firebase value of device and convert it to int
                 String controlString = snapshot.getValue().toString();
                 int controlInt = Integer.parseInt(controlString);
-                Log.i("Settings","control switch: "+controlInt);
+                Log.i("MainActivity Switch","control switch: "+controlInt);
 
                 //set the button to whatever the current firebase value is
                 if(controlInt==0){
                     buttonOFF();
-
-                }else{
+                }
+                else if (controlInt==1){
                     buttonON();
+                }
+                else{
+                    Toast.makeText(getActivity(), "ON/OFF error!", Toast.LENGTH_LONG).show();
                 }
 
                 /*//user can turn on or off using the button depending on the firebase value
@@ -224,25 +255,30 @@ public class MainFragment extends Fragment {
         });
     }
 
-    protected void setControlSwitchValue(){
+    /*protected void setControlSwitchValue(){
+
         sensorControlReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //read the current firebase value of device and convert it to int
                 String controlString = snapshot.getValue().toString();
                 int controlInt = Integer.parseInt(controlString);
-                Log.i("Settings","control switch: "+controlInt);
+                Log.i("MainActivity Switch 2","control switch: "+controlInt);
+
                 //set the switch to whatever the current firebase value is
                 if(controlInt==0){
                     onOffSwitch.setChecked(false);
-                }else{
+                }
+                else if (controlInt==1){
                     onOffSwitch.setChecked(true);
+                }
+                else {
+                    Toast.makeText(getActivity(), "Switch error!", Toast.LENGTH_LONG).show();
                 }
 
                 //when user activates control switch, set firebase value to 1 which will allow sensor to send values
                 //otherwise it will be turned off and it wont send values
-
-                onOffSwitch.setOnClickListener(new View.OnClickListener() {
+                *//*onOffSwitch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(onOffSwitch.isChecked()){
@@ -252,14 +288,14 @@ public class MainFragment extends Fragment {
                             sensorControlReference.setValue(0);
                         }
                     }
-                });
+                });*//*
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getActivity(), "Control Switch error!", Toast.LENGTH_LONG).show();
             }
         });
-    }
+    }*/
 
     protected void displayWarning() {
 
@@ -274,11 +310,17 @@ public class MainFragment extends Fragment {
                 new CountDownTimer(2000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         if (currentSensorValue!=0){
+                            mainButton.setClickable(false);
                             mainButton.setText("Too loud!");
                             mainButton.setBackgroundResource(R.drawable.circular_button_red);
                         }
+                        /*else {
+                            mainButton.setText("All Good!");
+                            mainButton.setBackgroundResource(R.drawable.circular_button_green);
+                        }*/
                     }
                     public void onFinish() {
+                        mainButton.setClickable(true);
                         mainButton.setText("All Good!");
                         mainButton.setBackgroundResource(R.drawable.circular_button_green);
                     }
@@ -294,15 +336,18 @@ public class MainFragment extends Fragment {
 
     protected void buttonOFF(){
         analogReference.setValue(0);
-        mainButton.setText("Device\nOFF");
+        mainButton.setText("Tap to\nturn\nON");
         mainButton.setBackgroundResource(R.drawable.circular_button);
         buttonOn = false;
     }
 
     protected void buttonON(){
+
+        mainButton.setClickable(false);
         displayWarning();
-        mainButton.setText("All good!");
-        mainButton.setBackgroundResource(R.drawable.circular_button_green);
+        mainButton.setBackgroundResource(R.drawable.circular_button);
+        mainButton.setText("Connecting\n...");
+
         buttonOn = true;
     }
 
@@ -485,7 +530,7 @@ public class MainFragment extends Fragment {
 
     }
 
-    private void resetThresholdCounts() {
+    /*private void resetThresholdCounts() {
 
         //minute timers
 
@@ -526,7 +571,7 @@ public class MainFragment extends Fragment {
         }.start();
 
 
-    }
+    }*/
              /*
         if(isTimerRunning==false) {
             timer1.start();

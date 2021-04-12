@@ -225,8 +225,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     public void resetThresholdCounts(){
         calendar = Calendar.getInstance();
         int checkSecond = calendar.get(Calendar.SECOND);
-        int checkHour = calendar.get(Calendar.MINUTE);
-        int checkDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int checkMinute = calendar.get(Calendar.MINUTE);
+        int checkHour = calendar.get(Calendar.HOUR_OF_DAY);
         Intent intent = new Intent();
         if(checkSecond == 0){
             userCountReference.child("minuteCount").setValue(0);
@@ -234,13 +234,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             intent.putExtra("minuteTV","0");
         }
 
-        if(checkHour == 0 && checkSecond == 0){
+        if(checkMinute == 0 && checkSecond == 0){
             userCountReference.child("hourCount").setValue(0);
             spHelper.setHourlyThresholdCount(0);
             intent.putExtra("hourTV","0");
         }
 
-        if(checkDay == 0 && checkHour == 0 && checkSecond == 0){
+        if(checkHour == 0 && checkMinute == 0 && checkSecond == 0){
             userCountReference.child("dayCount").setValue(0);
             spHelper.setDailyThresholdCount(0);
             intent.putExtra("dayTV","0");
