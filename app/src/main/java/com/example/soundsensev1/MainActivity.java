@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     @Override
     public void onBackPressed() {
-        finish();
+        return;
     }
 
     @Override

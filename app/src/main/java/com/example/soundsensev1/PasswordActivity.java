@@ -89,6 +89,11 @@ public class PasswordActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        return;
+    }
+
     protected void goToLoginActivity(){
         Intent intent = new Intent (this,LoginActivity.class);
         startActivity(intent);
