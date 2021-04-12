@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthEmailException;
@@ -37,9 +39,9 @@ public class ProfileFragment extends Fragment {
     private EditText editEmail;
     private Button saveButton;
 
-    private FirebaseUser user;
+    private static FirebaseUser user;
     private static DatabaseReference reference;
-    private String userID;
+    private static String userID;
 
     private SharedPreferencesHelper spHelper;
 
