@@ -336,7 +336,7 @@ public class MainFragment extends Fragment {
 
     protected void buttonOFF(){
         analogReference.setValue(0);
-        mainButton.setText("Device\nOFF");
+        mainButton.setText("Tap to\nturn\nON");
         mainButton.setBackgroundResource(R.drawable.circular_button);
         buttonOn = false;
     }
