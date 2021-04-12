@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private SlidingRootNav slidingRootNav;
 
     private static DatabaseReference userCountReference;
+    private static DatabaseReference sensorControlReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
         userCountReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("thresholdCounts");
+
+        sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
+
 
         spHelper = new SharedPreferencesHelper(this);
 
@@ -209,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             FirebaseAuth.getInstance().signOut();
             //edit shared preferences to set activity_executed to false
             spHelper.setUserLogIn(false);
+            sensorControlReference.setValue(0);
             goToLoginActivity();
         }
 
