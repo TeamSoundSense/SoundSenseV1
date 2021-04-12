@@ -44,6 +44,7 @@ public class ProfileFragment extends Fragment {
     private SharedPreferencesHelper spHelper;
 
     private static DatabaseReference userReference;
+    private static DatabaseReference sensorControlReference;
 
     @Nullable
     @Override
@@ -74,6 +75,8 @@ public class ProfileFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
+
+        sensorControlReference = FirebaseDatabase.getInstance().getReference().child("Device").child("ON&OFF");
 
         //get user info from firebase
 
@@ -178,6 +181,7 @@ public class ProfileFragment extends Fragment {
     }
 
     protected void logoutUser(){
+        sensorControlReference.setValue(0);
         FirebaseAuth.getInstance().signOut();
         //edit shared preferences to set activity_executed to false
         spHelper.setUserLogIn(false);
