@@ -22,6 +22,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthEmailException;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,12 +38,12 @@ public class ProfileFragment extends Fragment {
     private Button saveButton;
 
     private FirebaseUser user;
-    private DatabaseReference reference;
+    private static DatabaseReference reference;
     private String userID;
 
     private SharedPreferencesHelper spHelper;
 
-    private DatabaseReference userReference;
+    private static DatabaseReference userReference;
 
     @Nullable
     @Override
@@ -138,8 +140,8 @@ public class ProfileFragment extends Fragment {
                 userReference = FirebaseDatabase.getInstance().getReference("Users")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                userReference.child("name").setValue(editName.getText().toString());
-                userReference.child("email").setValue(editEmail.getText().toString());
+                //userReference.child("name").setValue(editName.getText().toString());
+                //userReference.child("email").setValue(editEmail.getText().toString());
 
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 user.updateEmail(String.valueOf(editEmail.getText()))
@@ -147,8 +149,14 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    userReference.child("name").setValue(editName.getText().toString());
+                                    userReference.child("email").setValue(editEmail.getText().toString());
                                     final String TAG = "EmailUpdate";
                                     Log.d(TAG, "User email address updated.");
+                                }
+                                else {
+                                    FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                                    Toast.makeText(getActivity().getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
