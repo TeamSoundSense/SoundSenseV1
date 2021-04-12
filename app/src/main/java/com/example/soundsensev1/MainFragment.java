@@ -48,7 +48,7 @@ public class MainFragment extends Fragment {
     private TextView minuteCountTV;
     private TextView hourCountTV;
     private TextView dayCountTV;
-    private Switch onOffSwitch;
+    //private Switch onOffSwitch;
 
     private static FirebaseUser user;
     private static String userID;
@@ -93,7 +93,7 @@ public class MainFragment extends Fragment {
         thresholdView = root.findViewById(R.id.thresholdView);
         mainButton = root.findViewById(R.id.mainButton);
         minuteCountTV = root.findViewById(R.id.minuteCountTV);
-        onOffSwitch = root.findViewById(R.id.onOffSwitch);
+        //onOffSwitch = root.findViewById(R.id.onOffSwitch);
 
         hourCountTV = root.findViewById(R.id.hourCountTV);
         dayCountTV = root.findViewById(R.id.dayCountTV);
@@ -145,7 +145,7 @@ public class MainFragment extends Fragment {
                 if(userProfile != null){
                     String name = userProfile.name;
                     if (name!="" || name!=null){
-                        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Hello "+name+"!");
+                        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Hello, "+name+"!");
                     }
                 }
             }
@@ -255,7 +255,7 @@ public class MainFragment extends Fragment {
         });
     }
 
-    protected void setControlSwitchValue(){
+    /*protected void setControlSwitchValue(){
 
         sensorControlReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -278,7 +278,7 @@ public class MainFragment extends Fragment {
 
                 //when user activates control switch, set firebase value to 1 which will allow sensor to send values
                 //otherwise it will be turned off and it wont send values
-                /*onOffSwitch.setOnClickListener(new View.OnClickListener() {
+                *//*onOffSwitch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(onOffSwitch.isChecked()){
@@ -288,14 +288,14 @@ public class MainFragment extends Fragment {
                             sensorControlReference.setValue(0);
                         }
                     }
-                });*/
+                });*//*
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getActivity(), "Control Switch error!", Toast.LENGTH_LONG).show();
             }
         });
-    }
+    }*/
 
     protected void displayWarning() {
 

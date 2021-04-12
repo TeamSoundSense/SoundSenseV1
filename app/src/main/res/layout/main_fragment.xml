@@ -22,14 +22,14 @@
         app:layout_constraintHorizontal_bias=".5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintVertical_bias="0.7"
         app:layout_constraintWidth_percent=".9"
         android:padding="5dp"/>
 
     <Button
         android:id="@+id/mainButton"
-        android:layout_width="197dp"
-        android:layout_height="197dp"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
         android:background="@drawable/circular_button"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -41,35 +41,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.4" />
 
-    <TextView
-        android:id="@+id/welcomeTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-light"
-        android:background="@drawable/vie_bg3"
-        android:text="Device Control ON/OFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mainButton"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintWidth_percent=".9"
-        android:padding="5dp" />
-
-    <Switch
-        android:id="@+id/onOffSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/welcomeTextView"
-        app:layout_constraintEnd_toEndOf="@+id/welcomeTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/welcomeTextView"
-        app:layout_constraintHorizontal_bias="1" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -78,11 +51,11 @@
         android:background="@drawable/vie_bg4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".25"
+        app:layout_constraintHeight_percent=".27"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainButton"
         app:layout_constraintWidth_percent=".9"
-        app:layout_constraintVertical_bias=".91">
+        app:layout_constraintVertical_bias=".4">
 
         <TextView
             android:id="@+id/textView2"
@@ -98,7 +71,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".13"
+            app:layout_constraintVertical_bias=".16"
             app:layout_constraintWidth_percent=".9"
             android:textAlignment="center"
             android:padding="5dp"/>
@@ -115,7 +88,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias=".2"
-            app:layout_constraintVertical_bias=".1"
+            app:layout_constraintVertical_bias=".15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
             app:layout_constraintWidth_percent=".3"/>
