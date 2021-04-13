@@ -39,9 +39,9 @@ public class ProfileFragment extends Fragment {
     private EditText editEmail;
     private Button saveButton;
 
-    private static FirebaseUser user;
+    private FirebaseUser user;
     private static DatabaseReference reference;
-    private static String userID;
+    private String userID;
 
     private SharedPreferencesHelper spHelper;
 
@@ -158,15 +158,14 @@ public class ProfileFragment extends Fragment {
                                     userReference.child("email").setValue(editEmail.getText().toString());
                                     final String TAG = "EmailUpdate";
                                     Log.d(TAG, "User email address updated.");
+                                    Toast.makeText(getActivity().getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     FirebaseAuthException e = (FirebaseAuthException)task.getException();
-                                    Toast.makeText(getActivity().getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity().getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
-
-                Toast.makeText(getActivity().getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
                 exitEditMode();
 
             }
