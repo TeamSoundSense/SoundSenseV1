@@ -1,6 +1,7 @@
 package com.example.soundsensev1;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -42,6 +46,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseUser user;
     private static DatabaseReference reference;
     private String userID;
+    private String userEmail;
 
     private SharedPreferencesHelper spHelper;
 
@@ -145,10 +150,12 @@ public class ProfileFragment extends Fragment {
                 userReference = FirebaseDatabase.getInstance().getReference("Users")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+                user = FirebaseAuth.getInstance().getCurrentUser();
+
                 //userReference.child("name").setValue(editName.getText().toString());
                 //userReference.child("email").setValue(editEmail.getText().toString());
 
-                user = FirebaseAuth.getInstance().getCurrentUser();
+
                 user.updateEmail(String.valueOf(editEmail.getText()))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -163,6 +170,7 @@ public class ProfileFragment extends Fragment {
                                 else {
                                     FirebaseAuthException e = (FirebaseAuthException)task.getException();
                                     Toast.makeText(getActivity().getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                    goToLoginActivity();
                                 }
                             }
                         });
