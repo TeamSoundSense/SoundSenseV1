@@ -10,9 +10,6 @@
             android:id="@+id/editItem"
             android:title="Edit Profile"
             app:showAsAction="never"/>
-            <item
-                android:id="@+id/logoutItem"
-                android:title="Logout" />
         </menu>
     </item>
 </menu>
