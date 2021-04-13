@@ -108,6 +108,70 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
+    protected void deleteUser(){
+
+        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    FirebaseAuth.getInstance().signOut();
+                    spHelper.setUserLogIn(false);
+
+                    reference.child(userID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            sensorControlReference.setValue(0);
+                            goToLoginActivity();
+                            Toast.makeText(getContext(), "User Deleted.", Toast.LENGTH_LONG).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Failed to delete user.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                else{
+                    try {
+                        FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                        Toast.makeText(getContext(), "Failed to delete.", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Connection Failure! "+e, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+
+        /*reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            spHelper.setUserLogIn(false);
+                            goToLoginActivity();
+                            Toast.makeText(getContext(), "User Deleted.", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            try {
+                                FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                                Toast.makeText(getContext(), "Failed to delete.", Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                Toast.makeText(getContext(), "Connection Failure! "+e, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Failed to delete user.", Toast.LENGTH_LONG).show();
+            }
+        });*/
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //MenuInflater inflater = getActivity().getMenuInflater();
@@ -123,7 +187,7 @@ public class ProfileFragment extends Fragment {
                 return true;
 
             case R.id.logoutItem:
-                logoutUser();
+                deleteUser();
                 return true;
 
             default:
