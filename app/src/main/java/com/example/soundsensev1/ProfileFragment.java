@@ -46,7 +46,6 @@ public class ProfileFragment extends Fragment {
     private FirebaseUser user;
     private static DatabaseReference reference;
     private String userID;
-    private String userEmail;
 
     private SharedPreferencesHelper spHelper;
 
@@ -127,9 +126,11 @@ public class ProfileFragment extends Fragment {
                 enterEditMode();
                 return true;
 
+                /*
             case R.id.logoutItem:
                 logoutUser();
                 return true;
+                 */
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -169,7 +170,7 @@ public class ProfileFragment extends Fragment {
                                 }
                                 else {
                                     FirebaseAuthException e = (FirebaseAuthException)task.getException();
-                                    Toast.makeText(getActivity().getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity().getApplicationContext(), "Re-login to edit your profile!", Toast.LENGTH_LONG).show();
                                     goToLoginActivity();
                                 }
                             }
