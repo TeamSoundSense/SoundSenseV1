@@ -134,11 +134,6 @@ public class LoginTabFragment extends Fragment {
 
     }
 
-    /*protected void goToRegistrationActivity(){
-        Intent intent = new Intent (this,RegistrationActivity.class);
-        startActivity(intent);
-    }*/
-
     protected void goToMainActivity(){
         Intent intent = new Intent (getContext(),MainActivity.class);
         startActivity(intent);

@@ -114,7 +114,6 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //MenuInflater inflater = getActivity().getMenuInflater();
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.profile_menu, menu);
     }
@@ -125,12 +124,6 @@ public class ProfileFragment extends Fragment {
             case R.id.editItem:
                 enterEditMode();
                 return true;
-
-                /*
-            case R.id.logoutItem:
-                logoutUser();
-                return true;
-                 */
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -152,10 +145,6 @@ public class ProfileFragment extends Fragment {
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 user = FirebaseAuth.getInstance().getCurrentUser();
-
-                //userReference.child("name").setValue(editName.getText().toString());
-                //userReference.child("email").setValue(editEmail.getText().toString());
-
 
                 user.updateEmail(String.valueOf(editEmail.getText()))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -188,14 +177,6 @@ public class ProfileFragment extends Fragment {
         editName.setEnabled(false);
         editEmail.setEnabled(false);
         saveButton.setVisibility(View.INVISIBLE);
-    }
-
-    protected void logoutUser(){
-        sensorControlReference.setValue(0);
-        FirebaseAuth.getInstance().signOut();
-        //edit shared preferences to set activity_executed to false
-        spHelper.setUserLogIn(false);
-        goToLoginActivity();
     }
 
     protected void goToLoginActivity(){

@@ -2,11 +2,9 @@ package com.example.soundsensev1;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class LoginAdapter extends FragmentPagerAdapter {
 
@@ -36,4 +34,5 @@ public class LoginAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
 }

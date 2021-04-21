@@ -11,14 +11,14 @@ import androidx.annotation.NonNull;
 
 public class SimpleItem extends DrawerItem<SimpleItem.ViewHolder>{
 
+    private Drawable icon;
+    private String title;
+
     private int selectedItemIconTint;
     private int selectedItemTextTint;
 
     private int normalItemIconTint;
     private int normalItemTextTint;
-
-    private Drawable icon;
-    private String title;
 
     public SimpleItem(Drawable icon, String title){
         this.icon = icon;
@@ -37,14 +37,12 @@ public class SimpleItem extends DrawerItem<SimpleItem.ViewHolder>{
         holder.title.setText(title);
         holder.icon.setImageDrawable(icon);
 
-        //holder.title.setText(isChecked() ? selectedItemTextTint : normalItemTextTint);
-        //holder.icon.setColorFilter(isChecked() ? selectedItemIconTint : normalItemIconTint);
     }
 
     public SimpleItem withSelectedIconTint(int selectedItemIconTint){
         this.selectedItemIconTint = selectedItemIconTint;
         return this;
-}
+    }
 
     public SimpleItem withSelectedTextTint(int selectedItemTextTint){
         this.selectedItemTextTint = selectedItemTextTint;
@@ -60,6 +58,7 @@ public class SimpleItem extends DrawerItem<SimpleItem.ViewHolder>{
         this.normalItemTextTint = normalItemTextTint;
         return this;
     }
+
 
     static class ViewHolder extends DrawerAdapter.ViewHolder{
 

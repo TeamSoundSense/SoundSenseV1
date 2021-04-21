@@ -3,16 +3,11 @@ package com.example.soundsensev1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -34,12 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class MainFragment extends Fragment {
 
@@ -48,7 +37,6 @@ public class MainFragment extends Fragment {
     private TextView minuteCountTV;
     private TextView hourCountTV;
     private TextView dayCountTV;
-    //private Switch onOffSwitch;
 
     private static FirebaseUser user;
     private static String userID;
@@ -56,7 +44,6 @@ public class MainFragment extends Fragment {
     private static DatabaseReference sensorControlReference;
     private static DatabaseReference reference;
     private static DatabaseReference userReference;
-    private static DatabaseReference inputSensorReference;
     private static DatabaseReference analogReference;
     private static DatabaseReference userCountReference;
     private static DatabaseReference sensorRangeReference;
@@ -72,10 +59,6 @@ public class MainFragment extends Fragment {
     private String hourCountString;
     private String dayCountString;
 
-    private long timerCount;
-    private boolean isTimerRunning;
-    private CountDownTimer timer1;
-    int countTest;
     private String mode;
 
     private static final String TAG = "MainActivity";
@@ -93,7 +76,6 @@ public class MainFragment extends Fragment {
         thresholdView = root.findViewById(R.id.thresholdView);
         mainButton = root.findViewById(R.id.mainButton);
         minuteCountTV = root.findViewById(R.id.minuteCountTV);
-        //onOffSwitch = root.findViewById(R.id.onOffSwitch);
 
         hourCountTV = root.findViewById(R.id.hourCountTV);
         dayCountTV = root.findViewById(R.id.dayCountTV);
@@ -107,7 +89,6 @@ public class MainFragment extends Fragment {
         }
 
         //reference to firebase to retrieve input sensor data
-        inputSensorReference = FirebaseDatabase.getInstance().getReference().child("Sensor");
         analogReference = FirebaseDatabase.getInstance().getReference().child("Sensor").child("Analog");
 
         userCountReference = FirebaseDatabase.getInstance().getReference("Users")
@@ -177,17 +158,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        /*onOffSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onOffSwitch.isChecked()){
-                    sensorControlReference.setValue(1);
-                }
-                else{
-                    sensorControlReference.setValue(0);
-                }
-            }
-        });*/
 
         //user can turn on or off using the button depending on the firebase value
         mainButton.setOnClickListener(new View.OnClickListener() {
@@ -231,21 +201,6 @@ public class MainFragment extends Fragment {
                     Toast.makeText(getActivity(), "ON/OFF error!", Toast.LENGTH_LONG).show();
                 }
 
-                /*//user can turn on or off using the button depending on the firebase value
-                mainButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(buttonOn){
-                            sensorControlReference.setValue(0);
-                            buttonOFF();
-                        }
-                        else{
-                            sensorControlReference.setValue(1);
-                            buttonON();
-                        }
-                    }
-                });*/
-
             }
 
             @Override
@@ -255,47 +210,6 @@ public class MainFragment extends Fragment {
         });
     }
 
-    /*protected void setControlSwitchValue(){
-
-        sensorControlReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //read the current firebase value of device and convert it to int
-                String controlString = snapshot.getValue().toString();
-                int controlInt = Integer.parseInt(controlString);
-                Log.i("MainActivity Switch 2","control switch: "+controlInt);
-
-                //set the switch to whatever the current firebase value is
-                if(controlInt==0){
-                    onOffSwitch.setChecked(false);
-                }
-                else if (controlInt==1){
-                    onOffSwitch.setChecked(true);
-                }
-                else {
-                    Toast.makeText(getActivity(), "Switch error!", Toast.LENGTH_LONG).show();
-                }
-
-                //when user activates control switch, set firebase value to 1 which will allow sensor to send values
-                //otherwise it will be turned off and it wont send values
-                *//*onOffSwitch.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(onOffSwitch.isChecked()){
-                            sensorControlReference.setValue(1);
-                        }
-                        else{
-                            sensorControlReference.setValue(0);
-                        }
-                    }
-                });*//*
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Control Switch error!", Toast.LENGTH_LONG).show();
-            }
-        });
-    }*/
 
     protected void displayWarning() {
 
@@ -314,10 +228,6 @@ public class MainFragment extends Fragment {
                             mainButton.setText("Too loud!");
                             mainButton.setBackgroundResource(R.drawable.circular_button_red);
                         }
-                        /*else {
-                            mainButton.setText("All Good!");
-                            mainButton.setBackgroundResource(R.drawable.circular_button_green);
-                        }*/
                     }
                     public void onFinish() {
                         mainButton.setClickable(true);
@@ -380,11 +290,6 @@ public class MainFragment extends Fragment {
 
                     incrementThresholdCounts();
 
-                    //userCountReference.child("hourCount").setValue(5);
-                    //userCountReference.child("dailyCount").setValue(6);
-
-
-
                     //start service to send notification
                     if(spHelper.getNotification()){
                         startService();
@@ -402,7 +307,7 @@ public class MainFragment extends Fragment {
 
     private void setThresholdCounts(){
 
-        //minutesCount************
+        //minutesCount
         userCountReference.child("minuteCount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -423,8 +328,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //hourCount************
-
+        //hourCount
         userCountReference.child("hourCount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -445,7 +349,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //dayCount************
+        //dayCount
         userCountReference.child("dayCount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -469,7 +373,6 @@ public class MainFragment extends Fragment {
 
     private void incrementThresholdCounts(){
 
-        //Log.i(TAG,minuteCountString);
         int minuteCountInt = spHelper.getMinuteThresholdCount();
         ++minuteCountInt;
         userCountReference.child("minuteCount").setValue(minuteCountInt);
@@ -489,7 +392,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //Log.i(TAG,minuteCountString);
         int hourCountInt = spHelper.getHourlyThresholdCount();
         ++hourCountInt;
         userCountReference.child("hourCount").setValue(hourCountInt);
@@ -527,159 +429,7 @@ public class MainFragment extends Fragment {
 
             }
         });
-
     }
-
-    /*private void resetThresholdCounts() {
-
-        //minute timers
-
-        int milisInAMinute = 60000;
-        long time = System.currentTimeMillis();
-        timerCount = milisInAMinute - (time % milisInAMinute);
-        Log.i("countseconds", "Initial timer count: " + String.valueOf(timerCount));
-
-        CountDownTimer timer2 = new CountDownTimer(60000,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                userCountReference.child("minuteCount").setValue(0);
-                spHelper.setMinuteThresholdCount(0);
-                minuteCountTV.setText("0");
-                Log.i("countseconds", "Minute count reset: 60000");
-                this.start();
-            }
-        };
-
-        timer1 = new CountDownTimer(timerCount, 1000) {
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            public void onFinish() {
-
-                userCountReference.child("minuteCount").setValue(0);
-                spHelper.setMinuteThresholdCount(0);
-                minuteCountTV.setText("0");
-                Log.i("countseconds", "Minute count reset: ");
-                timer2.start();
-            }
-        }.start();
-
-
-    }*/
-             /*
-        if(isTimerRunning==false) {
-            timer1.start();
-            timerCount=60000;
-            Log.i("countseconds","reset timer count: "+ String.valueOf(timerCount));
-
-
-        }
-
-
-
-
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                userCountReference.child("minuteCount").setValue(0);
-                minuteCountTV.setText(0);
-                Log.i(TAG,"Minute count reset");
-            }
-        };
-        executorService.schedule(r,0, TimeUnit.MINUTES);
-        executorService.shutdown();
-
-        int milisInAMinute = 60000;
-        long time = System.currentTimeMillis();
-
-        Runnable update = new Runnable() {
-            public void run() {
-                // Do whatever you want to do when the minute changes
-                userCountReference.child("minuteCount").setValue(0);
-                minuteCountTV.setText(0);
-                Log.i(TAG,"Minute count updated");
-            }
-        };
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                update.run();
-            }
-        }, time % milisInAMinute, milisInAMinute);
-
-// This will update for the current minute, it will be updated again in at most one minute.
-        update.run();
-
-        Timer timer2 = new Timer();
-        TimerTask hourlyTask = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        spHelper.setHourlyThresholdCount(0);
-                        Log.i(TAG,"Hourly count updated");
-                        hourlyThresholdTextView.setText(String.valueOf(spHelper.getHourlyThresholdCount()));
-                    }
-                });
-            }
-        };
-
-        timer2.schedule(hourlyTask,01,1000*60*60);
-
-        Timer timer3 = new Timer();
-        TimerTask dailyTask = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        spHelper.setDailyThresholdCount(0);
-                        Log.i(TAG,"Daily count updated");
-                        dailyThresholdTextView.setText(String.valueOf(spHelper.getDailyThresholdCount()));
-                    }
-                });
-            }
-        };
-
-        timer3.schedule(dailyTask,01,1000*60*60*24);
-
-         */
-
-
-    /*
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.dataItem:
-                goToDataActivity();
-                return true;
-            case R.id.settingsItem:
-                goToSettingsActivity();
-                return true;
-            case R.id.profileItem:
-                goToProfileActivity();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-     */
 
     //method to start foreground service for sending notifications
     protected void startService(){
@@ -687,7 +437,4 @@ public class MainFragment extends Fragment {
         ContextCompat.startForegroundService(getActivity(),serviceIntent);
     }
 
-    protected void stopService(){
-        Intent serviceIntent = new Intent(getActivity(), MyService.class);
-    }
 }

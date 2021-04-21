@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import com.airbnb.lottie.LottieAnimationView;
 
 
-
 public class IntroductoryActivity extends AppCompatActivity {
 
     //this activity determines whether the user is already sign in or not.
@@ -68,9 +67,6 @@ public class IntroductoryActivity extends AppCompatActivity {
             }.start();
 
         }
-
-
-
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
@@ -108,9 +104,4 @@ public class IntroductoryActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void goToLoginActivity(){
-        Intent intent = new Intent (this,LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }
