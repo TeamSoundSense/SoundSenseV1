@@ -1,3 +1,9 @@
+/*
+Layout design inspired by:
+Coding With Tea, Splash Screen Android Studio - Android Splash Screen | Splash Screen Animation in Android Studio. YouTube, 2020. [Video]. Available:
+https://www.youtube.com/watch?v=8EcEk2pVt0A [Accessed: 03-Apr-2021].
+*/
+
 package com.example.soundsensev1;
 
 import androidx.annotation.NonNull;

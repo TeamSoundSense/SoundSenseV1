@@ -1,3 +1,9 @@
+/*
+Navigation menu inspired by:
+Coding With Tea, Navigation Drawer Android Studio 2020 |Android Navigation Component - Navigation Component Android. YouTube, 2020. [Video]. Available:
+https://www.youtube.com/watch?v=U1dSfjNnd1Q [Accessed: 03-Apr-2021].
+*/
+
 package com.example.soundsensev1;
 
 import android.content.Intent;

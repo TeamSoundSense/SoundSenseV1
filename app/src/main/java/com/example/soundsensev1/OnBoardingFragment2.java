@@ -1,3 +1,7 @@
+/*
+Added the liquid swipe from the Cuberto Library to the Boarding Fragments
+Cuberto Design, “Cuberto/liquid-swipe-android,” GitHub. [Online]. Available: https://github.com/Cuberto/liquid-swipe-android. [Accessed: 03-Apr-2021].
+*/
 package com.example.soundsensev1;
 
 import android.content.Intent;
