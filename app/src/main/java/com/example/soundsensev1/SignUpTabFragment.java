@@ -1,6 +1,9 @@
 /*
 References:
 CodeWithMazn, #1 Login and Registration Android App Tutorial Using Firebase Authentication - Create User.  [Video] Available: https://www.youtube.com/watch?v=Z-RE1QuUWPg. [Accessed: 03-Apr-2021].
+
+Coding With Tea, Modern Login and Sign up Animation using Fragments and Viewpager - Android Studio Tutorials - Part 5. YouTube, 2020. [Video]. Available:
+https://www.youtube.com/watch?v=ayKMfVt2Sg4&list=PL5jb9EteFAOAO16th6HQa76-pdyT3y4L5&index=4. [Accessed: 03-Apr-2021].
  */
 
 package com.example.soundsensev1;
