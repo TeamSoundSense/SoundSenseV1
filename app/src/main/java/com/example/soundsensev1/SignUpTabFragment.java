@@ -1,3 +1,8 @@
+/*
+References:
+CodeWithMazn, #1 Login and Registration Android App Tutorial Using Firebase Authentication - Create User.  [Video] Available: https://www.youtube.com/watch?v=Z-RE1QuUWPg. [Accessed: 03-Apr-2021].
+ */
+
 package com.example.soundsensev1;
 
 import android.os.Bundle;

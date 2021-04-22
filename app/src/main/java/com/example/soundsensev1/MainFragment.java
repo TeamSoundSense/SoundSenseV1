@@ -1,3 +1,9 @@
+/*
+References:
+Google, Read and Write Data on Android. [Online]. Available: https://firebase.google.com/docs/database/android/read-and-write. [Accessed: 01-Apr-2021].
+Educatree, How to retrieve data from Firebase in Android || Retrieve data from firebase || Android Firebase #4. [Video] Available: https://www.youtube.com/watch?v=LpWhAz3e1sI. [Accessed: 03-Apr-2021].
+ */
+
 package com.example.soundsensev1;
 
 import android.content.Intent;
@@ -18,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.soundsensev1.SharedPreferencesHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

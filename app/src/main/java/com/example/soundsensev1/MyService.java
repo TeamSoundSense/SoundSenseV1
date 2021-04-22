@@ -1,3 +1,9 @@
+/*
+References:
+Coding in Flow, Notifications Tutorial Part 1 - NOTIFICATION CHANNELS - Android Studio Tutorial. [Video] Available: https://www.youtube.com/watch?v=tTbd1Mfi-Sk. [Accessed: 01-Apr-2021].
+Coding in Flow, How to Start a Foreground Service in Android (With Notification Channels). [Video] Available: https://www.youtube.com/watch?v=FbpD5RZtbCc>. [Accessed: 02-Apr-2021].
+ */
+
 package com.example.soundsensev1;
 
 import android.app.AlarmManager;
