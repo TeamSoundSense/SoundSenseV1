@@ -1,6 +1,13 @@
+/*
+References:
+CodeWithMazn, #1 Login and Registration Android App Tutorial Using Firebase Authentication - Create User.  [Video] Available: https://www.youtube.com/watch?v=Z-RE1QuUWPg. [Accessed: 03-Apr-2021].
+
+Coding With Tea, Modern Login and Sign up Animation using Fragments and Viewpager - Android Studio Tutorials - Part 5. YouTube, 2020. [Video]. Available:
+https://www.youtube.com/watch?v=ayKMfVt2Sg4&list=PL5jb9EteFAOAO16th6HQa76-pdyT3y4L5&index=4. [Accessed: 03-Apr-2021].
+ */
+
 package com.example.soundsensev1;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -9,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,16 +49,6 @@ public class SignUpTabFragment extends Fragment {
         passwordET = root.findViewById(R.id.passwordSignUpEditText);
         signUpButton = root.findViewById(R.id.signUpButton);
         registerProgressBar = root.findViewById(R.id.signUpProgressBar);
-
-        /*nameET.setTranslationX(800);
-        emailET.setTranslationX(800);
-        passwordET.setTranslationX(800);
-        signUpButton.setTranslationX(800);
-
-        nameET.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(300).start();
-        emailET.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
-        passwordET.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
-        signUpButton.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(900).start();*/
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -147,9 +143,5 @@ public class SignUpTabFragment extends Fragment {
                 });
     }
 
-    protected void goToLoginActivity(){
-        Intent intent = new Intent (getContext(),LoginActivity.class);
-        startActivity(intent);
-    }
 }
 

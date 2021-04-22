@@ -1,12 +1,15 @@
+/*
+Layout design inspired by:
+Coding With Tea, Modern Login and Sign up Animation using Fragments and Viewpager - Android Studio Tutorials - Part 5. YouTube, 2020. [Video]. Available:
+https://www.youtube.com/watch?v=ayKMfVt2Sg4&list=PL5jb9EteFAOAO16th6HQa76-pdyT3y4L5&index=4. [Accessed: 03-Apr-2021].
+*/
 package com.example.soundsensev1;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class LoginAdapter extends FragmentPagerAdapter {
 
@@ -36,4 +39,5 @@ public class LoginAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
 }

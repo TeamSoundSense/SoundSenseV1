@@ -1,3 +1,9 @@
+/*
+Layout design inspired by:
+Coding With Tea, Splash Screen Android Studio - Android Splash Screen | Splash Screen Animation in Android Studio. YouTube, 2020. [Video]. Available:
+https://www.youtube.com/watch?v=8EcEk2pVt0A [Accessed: 03-Apr-2021].
+*/
+
 package com.example.soundsensev1;
 
 import androidx.annotation.NonNull;
@@ -15,7 +21,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
-
 
 
 public class IntroductoryActivity extends AppCompatActivity {
@@ -68,9 +73,6 @@ public class IntroductoryActivity extends AppCompatActivity {
             }.start();
 
         }
-
-
-
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
@@ -108,9 +110,4 @@ public class IntroductoryActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void goToLoginActivity(){
-        Intent intent = new Intent (this,LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }

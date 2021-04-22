@@ -105,9 +105,6 @@ public class SettingFragment extends Fragment {
         helpImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                //DataHelpDialogFragment dataHelpDialogFragment = new DataHelpDialogFragment();
-                //dataHelpDialogFragment.show(getFragmentManager(), "DataHelpDialogFragment");
-
                 if(option == 0){
                     helpText.setVisibility(View.VISIBLE);
                     option = 1;
@@ -180,6 +177,5 @@ public class SettingFragment extends Fragment {
             }
         });
     }
-
 
 }

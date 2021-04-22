@@ -3,7 +3,6 @@ package com.example.soundsensev1;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
